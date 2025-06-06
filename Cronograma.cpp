@@ -19,10 +19,26 @@ string Cronograma::mostrarCronograma() {
         return "Cronograma vacio";
     }
 
+    // recorrer cronograma
     string crono;
     for (const auto& par : cronograma) {
         crono += par.first + " : " + par.second->mostrarTarea() + "\n";
-    } return crono;
+    }
+
+    // contar las tareas completadas
+    int tareasCompletadas = 0;
+    int tareasTotal = 0;
+    for (const auto& par : cronograma) {
+        tareasTotal++;
+        if (par.second->getEstado() == "completado") tareasCompletadas++;
+    }
+
+    // agregar el porcentaje de cronograma completado
+    // se usa static_cast<double> para convertir la division con decimales
+    string porcentaje = to_string(static_cast<double>(tareasCompletadas) / tareasTotal * 100);
+    crono += "Progreso: " + porcentaje + "%";
+
+    return crono;
 }
 
 bool Cronograma::esFechaValida(string fecha) {
