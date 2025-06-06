@@ -28,8 +28,8 @@ class TareaProduccion {
       void setResponsable(Personal* responsable);
 
       string mostrarTarea();
+
+      bool validarEstado(string& estado);
 };
-
-
 
 #endif //TAREAPRODUCCION_H

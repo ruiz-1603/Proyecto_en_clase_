@@ -7,6 +7,7 @@
 
 #include "Utilities.h"
 #include "TareaProduccion.h"
+#include <cmath>
 #include <map>
 #include <regex>
 
@@ -21,6 +22,7 @@ class Cronograma {
         void agregarTarea(string fecha, TareaProduccion* tarea);
         string mostrarCronograma();
 
+        double getProgreso();
         bool esFechaValida(string fecha);
 };
 

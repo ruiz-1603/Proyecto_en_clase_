@@ -8,8 +8,7 @@ Cronograma::Cronograma() {}
 
 void Cronograma::agregarTarea(string fecha, TareaProduccion* tarea) {
     if (!esFechaValida(fecha)) {
-        cout << "Fecha invalida" << endl;
-        return;
+        throw "Fecha invalida";
     }
     cronograma[fecha] = tarea;
 }
@@ -25,20 +24,26 @@ string Cronograma::mostrarCronograma() {
         crono += par.first + " : " + par.second->mostrarTarea() + "\n";
     }
 
-    // contar las tareas completadas
+    string progreso = to_string(getProgreso());
+    crono += "Progreso: " + progreso.substr(0,5) + "%";
+    return crono;
+}
+
+double Cronograma::getProgreso() {
+    // contar las tareas completadas y totales
     int tareasCompletadas = 0;
     int tareasTotal = 0;
     for (const auto& par : cronograma) {
         tareasTotal++;
-        if (par.second->getEstado() == "completado") tareasCompletadas++;
+        if (par.second->getEstado() == "completa") tareasCompletadas++;
     }
+
+    if (tareasTotal == 0) return 0.0;
 
     // agregar el porcentaje de cronograma completado
     // se usa static_cast<double> para convertir la division con decimales
-    string porcentaje = to_string(static_cast<double>(tareasCompletadas) / tareasTotal * 100);
-    crono += "Progreso: " + porcentaje + "%";
-
-    return crono;
+    double progreso = static_cast<double>(tareasCompletadas) / tareasTotal * 100;
+    return (round(progreso * 100) / 100.0); // retornar progreso con solo dos decimales
 }
 
 bool Cronograma::esFechaValida(string fecha) {

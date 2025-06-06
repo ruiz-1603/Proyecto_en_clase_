@@ -7,29 +7,31 @@
 #include "Personal.h"
 #include "TareaProduccion.h"
 #include "Lista.h"
+#include "Cronograma.h"
 
 class Pelicula {
     private:
       string titulo;
       string genero;
-      string estado; // "incompleta", "completada"
+      Cronograma* cronograma;
 
       Lista<Personal*> miembros;
       Lista<TareaProduccion*> tareas;
 
     public:
-      Pelicula(string titulo, string genero, string estado);
+      Pelicula(string titulo, string genero, Cronograma* cronograma);
       ~Pelicula() = default;
 
       // getters
       string getTitulo();
       string getGenero();
+      Cronograma* getCronograma();
       string getEstado();
 
       // setters
       void setTitulo(string titulo);
       void setGenero(string genero);
-      void setEstado(string estado);
+      void setCronograma(Cronograma* cronograma);
 };
 
 #endif //PELICULA_H
