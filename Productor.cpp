@@ -4,18 +4,13 @@
 
 #include "Productor.h"
 
-Productor::Productor(string id, string nombre, string email, int numeroProyectos)
-    : Personal(id, nombre, email){
-
-    }
-
-int Productor::getNumeroProyectos() {
-    return numeroProyectos;
+Productor::Productor(string id, string nombre, string email, int presupuesto) : Personal(id, nombre, email) {
+  this->presupuesto = presupuesto;
 }
 
-string Productor::getEspecialidad() {
-    return "Productor";
-}
+int Productor::getPresupuesto() { return this->presupuesto; }
+
+string Productor::getEspecialidad() { return "Productor"; }
 
 string Productor::toString() {
     stringstream ss;
@@ -23,6 +18,6 @@ string Productor::toString() {
        << "Especialidad: " << getEspecialidad() << endl
        << "ID: " << getId() << endl
        << "Email: " << getEmail() << endl
-       << "Número de proyectos: " << numeroProyectos << "\n\n";
+       << "Presupuesto: " << getPresupuesto() << endl;
     return ss.str();
 }

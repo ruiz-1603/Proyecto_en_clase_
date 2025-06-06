@@ -7,11 +7,13 @@
 #include"Personal.h"
 
 class Productor : public Personal {
+private:
+    float presupuesto;
 
 public:
-    Productor(string id, string nombre, string email, int numeroProyectos);
+    Productor(string id, string nombre, string email, int presupuesto);
 
-    int getNumeroProyectos();
+    int getPresupuesto();
     string getEspecialidad() override;
     string toString() override;
 };
