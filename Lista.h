@@ -38,6 +38,7 @@ public:
     bool estaVacia() const {
         return cabeza == nullptr;
     }
+
     void eliminar(const T& valor) {
         Nodo<T>* actual = cabeza;
         Nodo<T>* anterior = nullptr;
@@ -59,7 +60,8 @@ public:
             actual = actual->siguiente;
         }
     }
-    Nodo<T>* buscarPorNombre(const std::string& nombre) const {
+
+    Nodo<T>* buscarPorNombre(const string& nombre) const {
         Nodo<T>* actual = cabeza;
         while (actual) {
             if (actual->valor.getNombre() == nombre) {
@@ -68,6 +70,22 @@ public:
             actual = actual->siguiente;
         }
         return nullptr;
+    }
+
+    void mostrar() const {
+        if (estaVacia()) {
+            cout << "La lista está vacía." << endl;
+            return;
+        }
+
+        Nodo<T>* actual = cabeza;
+        int contador = 1;
+
+        while (actual) {
+            cout << contador << ". " << actual->valor << endl;
+            actual = actual->siguiente;
+            contador++;
+        }
     }
 };
 
