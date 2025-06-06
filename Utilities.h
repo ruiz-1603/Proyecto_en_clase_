@@ -4,5 +4,8 @@
 
 #ifndef UTILITIES_H
 #define UTILITIES_H
-
+#include<iostream>
+#include<sstream>
+#include<fstream>
+using namespace std;
 #endif //UTILITIES_H
