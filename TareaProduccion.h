@@ -9,23 +9,25 @@
 
 class TareaProduccion {
     private:
-      string descricion;
+      string descripcion;
       string estado; // "completa", "incompleta"
       Personal* responsable;
 
     public:
-      TareaProduccion(string descricion, string estado, Personal* responsable);
+      TareaProduccion(string descripcion, string estado, Personal* responsable);
       ~TareaProduccion() = default;
 
       // getters
-      string getDescricion();
+      string getDescripcion();
       string getEstado();
       Personal* getResponsable();
 
       // setters
-      void setDescricion(string descricion);
+      void setDescripcion(string descripcion);
       void setEstado(string estado);
       void setResponsable(Personal* responsable);
+
+      string mostrarTarea();
 };
 
 
