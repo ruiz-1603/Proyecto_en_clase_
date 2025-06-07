@@ -24,6 +24,8 @@ public:
         }
     }
 
+    Nodo<T>* getCabeza() const { return cabeza; }
+
     void agregar(T* elemento) {
         Nodo<T>* nuevo = new Nodo<T>(elemento);
         if (cabeza == nullptr) {

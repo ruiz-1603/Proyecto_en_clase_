@@ -7,17 +7,13 @@
 #include"Personal.h"
 
 class Artista : public Personal {
-
-  private:
-    string herramientasDibujo;
-    public:
-      Artista(string id, string nombre, string email, string herramientasDibujo);
-      string getHerramientasDibujo();
-      string getEspecialidad() override;
-      string toString() override;
-
+private:
+  string herramientasDibujo;
+public:
+  Artista(string id, string nombre, string email, string herramientasDibujo);
+  string getHerramientasDibujo();
+  string getEspecialidad() override;
+  string toString() override;
 };
-
-
 
 #endif //ARTISTA_H

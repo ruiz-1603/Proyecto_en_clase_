@@ -23,3 +23,14 @@ void ListaPersonal::eliminarPersonal(Personal* per) {
 string ListaPersonal::mostrarPersonal() {
   return personal->mostrar();
 }
+
+Personal* ListaPersonal::getPersonalPorID(string id) {
+  Nodo<Personal>* actual = personal->getCabeza();
+
+    while (actual != nullptr) {
+        if (actual->dato->getId() == id) {
+            return actual->dato;
+        }
+        actual = actual->siguiente;
+    } return nullptr;
+}

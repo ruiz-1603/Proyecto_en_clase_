@@ -13,13 +13,29 @@ ListaPeliculas::~ListaPeliculas() {
 }
 
 bool ListaPeliculas::agregarPelicula(Pelicula* pelicula) {
-  peliculas->agregar(pelicula);
+    // Verificar si ya existe una película con el mismo título
+    if (getPeliculaPorTitulo(pelicula->getTitulo()) != nullptr) {
+        return false;
+    }
+    peliculas->agregar(pelicula);
+    return true;
 }
 
 bool ListaPeliculas::eliminarPelicula(Pelicula* pelicula) {
-  peliculas->eliminar(pelicula);
+  return peliculas->eliminar(pelicula);
 }
 
 string ListaPeliculas::mostrarPeliculas() {
   return peliculas->mostrar();
+}
+
+Pelicula* ListaPeliculas::getPeliculaPorTitulo(string titulo) {
+    Nodo<Pelicula>* actual = peliculas->getCabeza();
+
+    while (actual != nullptr) {
+        if (actual->dato->getTitulo() == titulo) {
+            return actual->dato;
+        }
+        actual = actual->siguiente;
+    } return nullptr;
 }

@@ -19,6 +19,8 @@ public:
     void agregarPersonal(Personal*);
     void eliminarPersonal(Personal*);
     string mostrarPersonal();
+
+    Personal* getPersonalPorID(string id);
 };
 
 #endif //LISTAPERSONAL_H

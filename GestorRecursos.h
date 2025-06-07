@@ -9,6 +9,9 @@
 #include "Utilities.h"
 #include "ListaPersonal.h"
 #include "ListaPeliculas.h"
+#include "Productor.h"
+#include "Artista.h"
+#include "IngenieroDeSonido.h"
 
 class GestorRecursos {
 private:
@@ -29,8 +32,15 @@ public:
     void mostrarCronograma();
 
     void agregarPersonal();
+    void agregarProductor();
+    void agregarArtista();
+    void agregarIngenieroSonido();
+
     void eliminarPersonal();
-    void mostrarPersonal();
+    string mostrarPersonal();
+
+    ListaPeliculas* getPeliculas();
+    ListaPersonal* getPersonal();
 };
 
 #endif //GESTORRECURSOS_H

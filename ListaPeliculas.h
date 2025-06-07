@@ -19,6 +19,8 @@ public:
     bool agregarPelicula(Pelicula*);
     bool eliminarPelicula(Pelicula*);
     string mostrarPeliculas();
+
+    Pelicula* getPeliculaPorTitulo(string titulo);
 };
 
 #endif //LISTAPELICULAS_H

@@ -10,11 +10,11 @@ class IngenieroDeSonido : public Personal {
 private:
   int aniosExperiencia;
 
-  public:
-    IngenieroDeSonido(string id, string nombre, string email,int aniosExperiencia);
-    int getAniosExperiencia();
-    string getEspecialidad() override;
-    string toString() override;
+public:
+  IngenieroDeSonido(string id, string nombre, string email,int aniosExperiencia);
+  int getAniosExperiencia();
+  string getEspecialidad() override;
+  string toString() override;
 };
 
 
