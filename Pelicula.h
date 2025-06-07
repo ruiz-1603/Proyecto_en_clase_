@@ -15,12 +15,11 @@ class Pelicula {
       string genero;
       Cronograma* cronograma;
 
-      Lista<Personal*> miembros;
-      Lista<TareaProduccion*> tareas;
+      Lista<Personal>* equipo;
 
     public:
-      Pelicula(string titulo, string genero, Cronograma* cronograma);
-      ~Pelicula() = default;
+      Pelicula(string titulo, string genero);
+      ~Pelicula();
 
       // getters
       string getTitulo();
@@ -32,6 +31,9 @@ class Pelicula {
       void setTitulo(string titulo);
       void setGenero(string genero);
       void setCronograma(Cronograma* cronograma);
+
+      string toString();
+      string mostrarEquipo();
 };
 
 #endif //PELICULA_H

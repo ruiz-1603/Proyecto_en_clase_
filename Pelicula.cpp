@@ -4,7 +4,13 @@
 
 #include "Pelicula.h"
 
-Pelicula::Pelicula(string titulo, string genero, Cronograma* cronograma) : titulo(titulo), genero(genero), cronograma(cronograma) {}
+Pelicula::Pelicula(string titulo, string genero) : titulo(titulo), genero(genero) {
+  this->cronograma = new Cronograma();
+}
+
+Pelicula::~Pelicula() {
+  delete cronograma;
+}
 
 // getters
 string Pelicula::getTitulo() { return this->titulo; }
@@ -23,4 +29,15 @@ void Pelicula::setTitulo(string titulo) { this->titulo = titulo; }
 void Pelicula::setGenero(string genero) { this->genero = genero; }
 void Pelicula::setCronograma(Cronograma* cronograma) {
   this->cronograma = cronograma;
+}
+
+string Pelicula::toString() {
+  stringstream ss;
+  ss << "Titulo: " << titulo << endl;
+  ss << "Genero: " << genero << endl;
+  return ss.str();
+}
+
+string Pelicula::mostrarEquipo() {
+  return equipo->mostrar();
 }

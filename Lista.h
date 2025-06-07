@@ -7,85 +7,84 @@
 #include "Utilities.h"
 #include "Nodo.h"
 
-template <class T>
+template<typename T>
 class Lista {
 private:
     Nodo<T>* cabeza;
-    Nodo<T>* cola;
+    int tamaño;
 
 public:
-    Lista() : cabeza(nullptr), cola(nullptr) {}
+    Lista() : cabeza(nullptr), tamaño(0) {}
 
     ~Lista() {
-        Nodo<T>* temp;
-        while (cabeza) {
-            temp = cabeza;
+        while (cabeza != nullptr) {
+            Nodo<T>* temp = cabeza;
             cabeza = cabeza->siguiente;
             delete temp;
         }
     }
 
-    void agregar(const T& valor) {
-        Nodo<T>* nuevoNodo = new Nodo<T>(valor);
-        if (cola) {
-            cola->siguiente = nuevoNodo;
+    void agregar(T* elemento) {
+        Nodo<T>* nuevo = new Nodo<T>(elemento);
+        if (cabeza == nullptr) {
+            cabeza = nuevo;
         } else {
-            cabeza = nuevoNodo;
-        }
-        cola = nuevoNodo;
-    }
-
-    bool estaVacia() const {
-        return cabeza == nullptr;
-    }
-
-    void eliminar(const T& valor) {
-        Nodo<T>* actual = cabeza;
-        Nodo<T>* anterior = nullptr;
-
-        while (actual) {
-            if (actual->valor == valor) {
-                if (anterior) {
-                    anterior->siguiente = actual->siguiente;
-                } else {
-                    cabeza = actual->siguiente;
-                }
-                if (actual == cola) {
-                    cola = anterior;
-                }
-                delete actual;
-                return;
+            Nodo<T>* actual = cabeza;
+            while (actual->siguiente != nullptr) {
+                actual = actual->siguiente;
             }
-            anterior = actual;
-            actual = actual->siguiente;
+            actual->siguiente = nuevo;
         }
+        tamaño++;
     }
 
-    Nodo<T>* buscarPorNombre(const string& nombre) const {
+    string mostrar() {
+        stringstream ss;
         Nodo<T>* actual = cabeza;
-        while (actual) {
-            if (actual->valor.getNombre() == nombre) {
-                return actual;
-            }
-            actual = actual->siguiente;
-        }
-        return nullptr;
-    }
+        int contador = 0;
 
-    void mostrar() const {
-        if (estaVacia()) {
-            cout << "La lista está vacía." << endl;
-            return;
-        }
-
-        Nodo<T>* actual = cabeza;
-        int contador = 1;
-
-        while (actual) {
-            cout << contador << ". " << actual->valor << endl;
+        while (actual != nullptr) {
+            ss << "[" << contador << "] " << actual->dato->toString() << "\n";
             actual = actual->siguiente;
             contador++;
         }
+
+        if (tamaño == 0) {
+            ss << "Lista vacía\n";
+        }
+
+        return ss.str();
+    }
+
+    bool eliminar(T* elemento) {
+        if (cabeza == nullptr) return false;
+
+        // Si es el primer elemento
+        if (cabeza->dato == elemento) {
+            Nodo<T>* temp = cabeza;
+            cabeza = cabeza->siguiente;
+            delete temp;
+            tamaño--;
+            return true;
+        }
+
+        // Buscar en el resto de la lista
+        Nodo<T>* actual = cabeza;
+        while (actual->siguiente != nullptr) {
+            if (actual->siguiente->dato == elemento) {
+                Nodo<T>* temp = actual->siguiente;
+                actual->siguiente = temp->siguiente;
+                delete temp;
+                tamaño--;
+                return true;
+            }
+            actual = actual->siguiente;
+        }
+        return false;
+    }
+
+    int obtenerTamaño() const {
+        return tamaño;
     }
 };
 
