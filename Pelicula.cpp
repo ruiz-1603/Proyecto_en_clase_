@@ -6,10 +6,12 @@
 
 Pelicula::Pelicula(string titulo, string genero) : titulo(titulo), genero(genero) {
   this->cronograma = new Cronograma();
+  this->equipo = new Lista<Personal>();
 }
 
 Pelicula::~Pelicula() {
   delete cronograma;
+  delete equipo;
 }
 
 // getters
@@ -40,4 +42,28 @@ string Pelicula::toString() {
 
 string Pelicula::mostrarEquipo() {
   return equipo->mostrar();
+}
+
+// implementación de los métodos para manejar el equipo
+bool Pelicula::agregarMiembro(Personal* miembro) {
+  return equipo->agregar(miembro);
+}
+
+bool Pelicula::eliminarMiembro(Personal* miembro) {
+  return equipo->eliminar(miembro);
+}
+
+Personal* Pelicula::getMiembroPorID(string id) {
+  Nodo<Personal>* actual = equipo->getPrimero();
+  while (actual != nullptr) {
+    if (actual->getDato()->getId() == id) {
+      return actual->getDato();
+    }
+    actual = actual->getSiguiente();
+  }
+  return nullptr;
+}
+
+Lista<Personal>* Pelicula::getEquipo() {
+  return equipo;
 }

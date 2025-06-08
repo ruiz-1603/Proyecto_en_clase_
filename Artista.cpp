@@ -3,17 +3,16 @@
 //
 
 #include "Artista.h"
-Artista::Artista(string id, string nombre, string email, string herramientasDibujo)
+Artista::Artista(string& id, string& nombre, string& email, string& herramientasDibujo)
     :Personal(id, nombre, email) {
       this->herramientasDibujo = herramientasDibujo;
-
 }
 
 string Artista::getHerramientasDibujo() {
   return herramientasDibujo;
 }
 
-string getEspecialidad() {
+string Artista::getEspecialidad() {
   return "Artista";
 }
 

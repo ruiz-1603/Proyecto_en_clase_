@@ -70,6 +70,7 @@ void GestorRecursos::agregarPersonal() {
     cout << "1. Productor" << endl;
     cout << "2. Artista" << endl;
     cout << "3. Ingeniero de Sonido" << endl;
+    cout << "Ingrese una opcion: ";
     cin >> opcion;
     cin.ignore();
 

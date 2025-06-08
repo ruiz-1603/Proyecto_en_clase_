@@ -19,25 +19,30 @@ public:
     ~Lista() {
         while (cabeza != nullptr) {
             Nodo<T>* temp = cabeza;
-            cabeza = cabeza->siguiente;
+            cabeza = cabeza->getSiguiente();
             delete temp;
         }
     }
 
-    Nodo<T>* getCabeza() const { return cabeza; }
+    Nodo<T>* getPrimero() const { return cabeza; }
 
-    void agregar(T* elemento) {
-        Nodo<T>* nuevo = new Nodo<T>(elemento);
-        if (cabeza == nullptr) {
-            cabeza = nuevo;
-        } else {
-            Nodo<T>* actual = cabeza;
-            while (actual->siguiente != nullptr) {
-                actual = actual->siguiente;
+    bool agregar(T* elemento) {
+        try {
+            Nodo<T>* nuevo = new Nodo<T>(elemento);
+            if (cabeza == nullptr) {
+                cabeza = nuevo;
+            } else {
+                Nodo<T>* actual = cabeza;
+                while (actual->getSiguiente() != nullptr) {
+                    actual = actual->getSiguiente();
+                }
+                actual->setSiguiente(nuevo);
             }
-            actual->siguiente = nuevo;
+            tamaño++;
+            return true;
+        } catch (...) {
+            return false;
         }
-        tamaño++;
     }
 
     string mostrar() {
@@ -46,8 +51,8 @@ public:
         int contador = 0;
 
         while (actual != nullptr) {
-            ss << "[" << contador << "] " << actual->dato->toString() << "\n";
-            actual = actual->siguiente;
+            ss << "[" << contador << "] " << actual->getDato()->toString() << "\n";
+            actual = actual->getSiguiente();
             contador++;
         }
 
@@ -62,9 +67,9 @@ public:
         if (cabeza == nullptr) return false;
 
         // Si es el primer elemento
-        if (cabeza->dato == elemento) {
+        if (cabeza->getDato() == elemento) {
             Nodo<T>* temp = cabeza;
-            cabeza = cabeza->siguiente;
+            cabeza = cabeza->getSiguiente();
             delete temp;
             tamaño--;
             return true;
@@ -72,15 +77,15 @@ public:
 
         // Buscar en el resto de la lista
         Nodo<T>* actual = cabeza;
-        while (actual->siguiente != nullptr) {
-            if (actual->siguiente->dato == elemento) {
-                Nodo<T>* temp = actual->siguiente;
-                actual->siguiente = temp->siguiente;
+        while (actual->getSiguiente() != nullptr) {
+            if (actual->getSiguiente()->getDato() == elemento) {
+                Nodo<T>* temp = actual->getSiguiente();
+                actual->setSiguiente(temp->getSiguiente());
                 delete temp;
                 tamaño--;
                 return true;
             }
-            actual = actual->siguiente;
+            actual = actual->getSiguiente();
         }
         return false;
     }

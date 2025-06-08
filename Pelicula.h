@@ -5,7 +5,6 @@
 #ifndef PELICULA_H
 #define PELICULA_H
 #include "Personal.h"
-#include "TareaProduccion.h"
 #include "Lista.h"
 #include "Cronograma.h"
 
@@ -34,6 +33,12 @@ class Pelicula {
 
       string toString();
       string mostrarEquipo();
+      
+      // métodos para manejar el equipo
+      bool agregarMiembro(Personal* miembro);
+      bool eliminarMiembro(Personal* miembro);
+      Personal* getMiembroPorID(string id);
+      Lista<Personal>* getEquipo();
 };
 
 #endif //PELICULA_H
