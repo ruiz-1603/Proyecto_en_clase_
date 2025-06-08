@@ -4,16 +4,21 @@
 
 #ifndef ARTISTA_H
 #define ARTISTA_H
-#include"Personal.h"
+#include "Personal.h"
 
 class Artista : public Personal {
 private:
-  string herramientasDibujo;
+    string herramientasDibujo;
+
 public:
-  Artista(string& id, string& nombre, string& email, string& herramientasDibujo);
-  string getHerramientasDibujo();
-  string getEspecialidad() override;
-  string toString() override;
+    Artista(string& id, string& nombre, string& email, string& herramientasDibujo);
+    ~Artista() override = default;
+
+    string getHerramientasDibujo() const { return herramientasDibujo; }
+    void setHerramientasDibujo(const string& herramientas) { herramientasDibujo = herramientas; }
+
+    string getEspecialidad() const override { return "Artista"; }
+    string toString() const override;
 };
 
 #endif //ARTISTA_H

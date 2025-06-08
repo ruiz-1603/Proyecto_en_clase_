@@ -13,6 +13,13 @@ private:
     Nodo<T>* cabeza;
     int tamaño;
 
+    // Método privado para eliminar un dato
+    void eliminarDato(T* dato) {
+        if (dato != nullptr) {
+            delete dato;
+        }
+    }
+
 public:
     Lista() : cabeza(nullptr), tamaño(0) {}
 
@@ -20,13 +27,18 @@ public:
         while (cabeza != nullptr) {
             Nodo<T>* temp = cabeza;
             cabeza = cabeza->getSiguiente();
+            eliminarDato(temp->getDato());
             delete temp;
         }
     }
 
     Nodo<T>* getPrimero() const { return cabeza; }
+    int obtenerTamaño() const { return tamaño; }
+    bool estaVacia() const { return cabeza == nullptr; }
 
     bool agregar(T* elemento) {
+        if (elemento == nullptr) return false;
+        
         try {
             Nodo<T>* nuevo = new Nodo<T>(elemento);
             if (cabeza == nullptr) {
@@ -45,31 +57,33 @@ public:
         }
     }
 
-    string mostrar() {
+    string mostrar() const {
         stringstream ss;
-        Nodo<T>* actual = cabeza;
-        int contador = 0;
-
-        while (actual != nullptr) {
-            ss << "[" << contador << "] " << actual->getDato()->toString() << "\n";
-            actual = actual->getSiguiente();
-            contador++;
+        
+        if (tamaño == 0) {
+            ss << "No hay elementos en la lista." << endl;
+            return ss.str();
         }
 
-        if (tamaño == 0) {
-            ss << "Lista vacía\n";
+        Nodo<T>* actual = cabeza;
+        while (actual != nullptr) {
+            if (actual->getDato() != nullptr) {
+                ss << actual->getDato()->toString();
+            }
+            actual = actual->getSiguiente();
         }
 
         return ss.str();
     }
 
     bool eliminar(T* elemento) {
-        if (cabeza == nullptr) return false;
+        if (cabeza == nullptr || elemento == nullptr) return false;
 
         // Si es el primer elemento
         if (cabeza->getDato() == elemento) {
             Nodo<T>* temp = cabeza;
             cabeza = cabeza->getSiguiente();
+            eliminarDato(temp->getDato());
             delete temp;
             tamaño--;
             return true;
@@ -81,6 +95,7 @@ public:
             if (actual->getSiguiente()->getDato() == elemento) {
                 Nodo<T>* temp = actual->getSiguiente();
                 actual->setSiguiente(temp->getSiguiente());
+                eliminarDato(temp->getDato());
                 delete temp;
                 tamaño--;
                 return true;
@@ -88,10 +103,6 @@ public:
             actual = actual->getSiguiente();
         }
         return false;
-    }
-
-    int obtenerTamaño() const {
-        return tamaño;
     }
 };
 

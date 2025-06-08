@@ -22,23 +22,20 @@ public:
     GestorRecursos();
     ~GestorRecursos();
 
+    // métodos de película
     void agregarPelicula();
-    void seleccionarPelicula();
-    string mostrarPeliculas();
     void eliminarPelicula();
+    string mostrarPeliculas();
 
-    void asignarTarea();
-    void marcarTarea();
-    void mostrarCronograma();
-
+    // Métodos de personal
     void agregarPersonal();
     void agregarProductor();
     void agregarArtista();
     void agregarIngenieroSonido();
-
     void eliminarPersonal();
-    string mostrarPersonal();
+    string mostrarPersonal() const;
 
+    // getters de listas
     ListaPeliculas* getPeliculas();
     ListaPersonal* getPersonal();
 };

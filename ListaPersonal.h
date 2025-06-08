@@ -16,7 +16,7 @@ public:
     ListaPersonal();
     ~ListaPersonal();
 
-    void agregarPersonal(Personal*);
+    bool agregarPersonal(Personal*);
     void eliminarPersonal(Personal*);
     string mostrarPersonal();
 

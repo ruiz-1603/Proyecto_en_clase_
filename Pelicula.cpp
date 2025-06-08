@@ -3,21 +3,19 @@
 //
 
 #include "Pelicula.h"
+#include <iomanip>
 
-Pelicula::Pelicula(string titulo, string genero) : titulo(titulo), genero(genero) {
-  this->cronograma = new Cronograma();
-  this->equipo = new Lista<Personal>();
+Pelicula::Pelicula(string& titulo) : titulo(titulo) {
+  equipo = new Lista<Personal>();
+  cronograma = new Cronograma();
 }
 
 Pelicula::~Pelicula() {
-  delete cronograma;
   delete equipo;
+  delete cronograma;
 }
 
 // getters
-string Pelicula::getTitulo() { return this->titulo; }
-string Pelicula::getGenero() { return this->genero; }
-Cronograma* Pelicula::getCronograma() { return this->cronograma; }
 string Pelicula::getEstado() {
   if (cronograma != nullptr && cronograma->getProgreso() == 100.00) {
      return "completa";
@@ -28,19 +26,24 @@ string Pelicula::getEstado() {
 
 // setters
 void Pelicula::setTitulo(string titulo) { this->titulo = titulo; }
-void Pelicula::setGenero(string genero) { this->genero = genero; }
 void Pelicula::setCronograma(Cronograma* cronograma) {
   this->cronograma = cronograma;
 }
 
 string Pelicula::toString() {
   stringstream ss;
+  ss << "----------------------------------------" << endl;
   ss << "Titulo: " << titulo << endl;
-  ss << "Genero: " << genero << endl;
+  ss << "Estado: " << getEstado() << endl;
+  if (cronograma != nullptr) {
+    ss << "Progreso: " << fixed << setprecision(2) << cronograma->getProgreso() << "%" << endl;
+  }
+  ss << "Miembros del equipo: " << equipo->obtenerTamaño() << endl;
+  ss << "----------------------------------------" << endl;
   return ss.str();
 }
 
-string Pelicula::mostrarEquipo() {
+string Pelicula::mostrarEquipo() const {
   return equipo->mostrar();
 }
 
@@ -64,6 +67,3 @@ Personal* Pelicula::getMiembroPorID(string id) {
   return nullptr;
 }
 
-Lista<Personal>* Pelicula::getEquipo() {
-  return equipo;
-}

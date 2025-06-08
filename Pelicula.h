@@ -4,41 +4,38 @@
 
 #ifndef PELICULA_H
 #define PELICULA_H
-#include "Personal.h"
+#include "Utilities.h"
 #include "Lista.h"
+#include "Personal.h"
 #include "Cronograma.h"
 
 class Pelicula {
     private:
       string titulo;
-      string genero;
+      Lista<Personal>* equipo;
       Cronograma* cronograma;
 
-      Lista<Personal>* equipo;
-
     public:
-      Pelicula(string titulo, string genero);
+      Pelicula(string& titulo);
       ~Pelicula();
 
       // getters
-      string getTitulo();
-      string getGenero();
-      Cronograma* getCronograma();
+      string getTitulo() const { return titulo; }
+      Cronograma* getCronograma() const { return cronograma; }
       string getEstado();
 
       // setters
       void setTitulo(string titulo);
-      void setGenero(string genero);
       void setCronograma(Cronograma* cronograma);
 
       string toString();
-      string mostrarEquipo();
+      string mostrarEquipo() const;
       
       // métodos para manejar el equipo
       bool agregarMiembro(Personal* miembro);
       bool eliminarMiembro(Personal* miembro);
       Personal* getMiembroPorID(string id);
-      Lista<Personal>* getEquipo();
+      Lista<Personal>* getEquipo() const { return equipo; }
 };
 
 #endif //PELICULA_H

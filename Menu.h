@@ -9,29 +9,32 @@
 #include "Productor.h"
 #include "Artista.h"
 #include "IngenieroDeSonido.h"
+#include "EstrategiaTareaAnimacion.h"
+#include "EstrategiaTareaSonido.h"
+#include <iomanip>
 
 class Menu {
 private:
   GestorRecursos* interfaz;
 
-  // Funciones auxiliares para crear personal
+  // Métodos auxiliares
+  void seleccionarPelicula();
+  void menuPelicula(Pelicula* pelicula);
+  void menuPersonal(Pelicula* pelicula);
+  void menuCronograma(Pelicula* pelicula);
+  void agregarPersonalAPelicula(Pelicula* pelicula);
+  void eliminarPersonalDePelicula(Pelicula* pelicula);
+  void asignarTareaAPelicula(Pelicula* pelicula);
+  void marcarTareaCompleta(Pelicula* pelicula);
   Personal* crearProductor();
   Personal* crearArtista();
   Personal* crearIngenieroSonido();
-  void agregarPersonalAPelicula(Pelicula* pelicula);
-  void eliminarPersonalDePelicula(Pelicula* pelicula);
 
 public:
   Menu();
   ~Menu();
 
   void menuPrincipal();
-
-  void seleccionarPelicula();
-  void menuPelicula(Pelicula* pelicula);
-
-  void menuCronograma(Pelicula* pelicula);
-  void menuPersonal(Pelicula* pelicula);
 };
 
 #endif //MENU_H

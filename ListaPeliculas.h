@@ -16,10 +16,11 @@ public:
     ListaPeliculas();
     ~ListaPeliculas();
 
-    bool agregarPelicula(Pelicula*);
-    bool eliminarPelicula(Pelicula*);
+    void agregarPelicula(Pelicula*);
+    void eliminarPelicula(Pelicula*);
     string mostrarPeliculas();
 
+    Lista<Pelicula>* getPeliculas() { return peliculas; }
     Pelicula* getPeliculaPorTitulo(string titulo);
 };
 

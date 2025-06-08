@@ -8,22 +8,26 @@
 #include "Utilities.h"
 #include "TareaProduccion.h"
 #include <cmath>
-#include <map>
-#include <regex>
+#include <vector>
+#include "Lista.h"
 
 class Cronograma {
     private:
-        map<string, TareaProduccion*> cronograma;
+        Lista<TareaProduccion>* tareas;
+        bool esFechaValida(string fecha);
 
     public:
         Cronograma();
-        ~Cronograma() = default;
+        ~Cronograma();
 
-        void agregarTarea(string fecha, TareaProduccion* tarea);
-        string mostrarCronograma();
-
-        double getProgreso();
-        bool esFechaValida(string fecha);
+        void agregarTarea(TareaProduccion* tarea);
+        void marcarTareaCompleta(int indice);
+        string mostrarCronograma() const;
+        double getProgreso() const;
+        
+        // Getters
+        int getCantidadTareas() const { return tareas->obtenerTamaño(); }
+        TareaProduccion* getTarea(int indice) const;
 };
 
 #endif //CRONOGRAMA_H

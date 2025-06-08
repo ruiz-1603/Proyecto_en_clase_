@@ -4,51 +4,67 @@
 
 #include "TareaProduccion.h"
 
-TareaProduccion::TareaProduccion(string descripcion, string estado, Personal* responsable) {
-  this->descripcion = descripcion;
-  this->responsable = responsable;
+TareaProduccion::TareaProduccion(string descripcion, Personal* responsable, EstrategiaTarea* estrategia)
+    : descripcion(descripcion), estado("incompleta"), responsable(nullptr), estrategia(estrategia) {
+    if (estrategia->validarResponsable(responsable)) {
+        this->responsable = responsable;
+        this->tiempoEstimado = estrategia->calcularTiempoEstimado();
+    } else {
+        throw "El responsable no es válido para esta tarea";
+    }
+}
 
-  if (validarEstado(estado)) {
-    this->estado = estado;
-  } else {
-    throw "Estado invalido"; // poner exception
-  }
+TareaProduccion::~TareaProduccion() {
+    delete estrategia;
 }
 
 // getters
-string TareaProduccion::getDescripcion() { return this->descripcion; }
-string TareaProduccion::getEstado() { return this->estado; }
-Personal* TareaProduccion::getResponsable() { return this->responsable; }
+string TareaProduccion::getDescripcion() const { return descripcion; }
+string TareaProduccion::getEstado() const { return estado; }
+Personal* TareaProduccion::getResponsable() const { return responsable; }
+int TareaProduccion::getTiempoEstimado() const { return tiempoEstimado; }
+string TareaProduccion::getRequisitos() const { return estrategia->obtenerRequisitos(); }
 
 // setters
-void TareaProduccion::setDescripcion(string descricion) { this->descripcion = descricion; }
+void TareaProduccion::setDescripcion(string descripcion) { this->descripcion = descripcion; }
 
 void TareaProduccion::setEstado(string estado) {
-  if (validarEstado(estado)) {
-    this->estado = estado;
-  } else {
-    throw "Estado invalido"; // poner exception
-  }
-}
-
-void TareaProduccion::setResponsable(Personal* responsable) {this->responsable = responsable; }
-
-string TareaProduccion::mostrarTarea() {
-  stringstream ss;
-  ss << "Tarea:" << endl;
-  ss << this->descripcion << endl;
-  ss << this->estado << endl;
-  ss << "Responsable:" << endl;
-  ss << this->responsable->toString() << endl;
-  return ss.str();
-}
-
-bool TareaProduccion::validarEstado(string& estado) {
-    // convertir estado a minusculas
-    for (char& c : estado) {
-      c = tolower(c);
+    if (validarEstado(estado)) {
+        this->estado = estado;
+    } else {
+        throw "Estado inválido";
     }
+}
 
-    if (estado == "completa" || estado == "incompleta") return true;
+bool TareaProduccion::setResponsable(Personal* responsable) {
+    if (estrategia->validarResponsable(responsable)) {
+        this->responsable = responsable;
+        return true;
+    }
     return false;
+}
+
+void TareaProduccion::setEstrategia(EstrategiaTarea* nuevaEstrategia) {
+    if (nuevaEstrategia->validarResponsable(this->responsable)) {
+        delete this->estrategia;
+        this->estrategia = nuevaEstrategia;
+        this->tiempoEstimado = estrategia->calcularTiempoEstimado();
+    } else {
+        throw "El responsable actual no es válido para la nueva estrategia";
+    }
+}
+
+string TareaProduccion::mostrarTarea() const {
+    stringstream ss;
+    ss << "Descripción: " << descripcion << endl;
+    ss << "Estado: " << estado << endl;
+    ss << "Tiempo Estimado: " << tiempoEstimado << " días" << endl;
+    ss << "Responsable: " << responsable->toString() << endl;
+    ss << "Requisitos:" << endl;
+    ss << estrategia->obtenerRequisitos();
+    return ss.str();
+}
+
+bool TareaProduccion::validarEstado(string& estado) const {
+    return estado == "completa" || estado == "incompleta";
 }

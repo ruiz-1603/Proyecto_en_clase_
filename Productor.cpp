@@ -4,20 +4,14 @@
 
 #include "Productor.h"
 
-Productor::Productor(string id, string nombre, string email, int presupuesto) : Personal(id, nombre, email) {
-  this->presupuesto = presupuesto;
-}
+Productor::Productor(string& id, string& nombre, string& email, float presupuesto)
+    : Personal(id, nombre, email), presupuesto(presupuesto) {}
 
-int Productor::getPresupuesto() { return this->presupuesto; }
-
-string Productor::getEspecialidad() { return "Productor"; }
-
-string Productor::toString() {
+string Productor::toString() const {
     stringstream ss;
-    ss << "Nombre: " << getNombre() << endl
-       << "Especialidad: " << getEspecialidad() << endl
-       << "ID: " << getId() << endl
-       << "Email: " << getEmail() << endl
-       << "Presupuesto: " << getPresupuesto() << endl;
+    ss << "ID: " << id << endl;
+    ss << "Nombre: " << nombre << endl;
+    ss << "Email: " << email << endl;
+    ss << "Presupuesto: " << presupuesto << endl;
     return ss.str();
 }

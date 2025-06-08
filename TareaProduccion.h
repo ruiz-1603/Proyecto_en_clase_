@@ -6,30 +6,35 @@
 #define TAREAPRODUCCION_H
 #include "Utilities.h"
 #include "Personal.h"
+#include "EstrategiaTarea.h"
 
 class TareaProduccion {
     private:
-      string descripcion;
-      string estado; // "completa", "incompleta"
-      Personal* responsable;
+        string descripcion;
+        string estado; // "completa", "incompleta"
+        Personal* responsable;
+        EstrategiaTarea* estrategia;
+        int tiempoEstimado;
 
     public:
-      TareaProduccion(string descripcion, string estado, Personal* responsable);
-      ~TareaProduccion() = default;
+        TareaProduccion(string descripcion, Personal* responsable, EstrategiaTarea* estrategia);
+        ~TareaProduccion();
 
-      // getters
-      string getDescripcion();
-      string getEstado();
-      Personal* getResponsable();
+        // getters
+        string getDescripcion() const;
+        string getEstado() const;
+        Personal* getResponsable() const;
+        int getTiempoEstimado() const;
+        string getRequisitos() const;
 
-      // setters
-      void setDescripcion(string descripcion);
-      void setEstado(string estado);
-      void setResponsable(Personal* responsable);
+        // setters
+        void setDescripcion(string descripcion);
+        void setEstado(string estado);
+        bool setResponsable(Personal* responsable);
+        void setEstrategia(EstrategiaTarea* nuevaEstrategia);
 
-      string mostrarTarea();
-
-      bool validarEstado(string& estado);
+        string mostrarTarea() const;
+        bool validarEstado(string& estado) const;
 };
 
 #endif //TAREAPRODUCCION_H

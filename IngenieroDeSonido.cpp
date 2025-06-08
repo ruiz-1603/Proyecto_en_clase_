@@ -3,25 +3,15 @@
 //
 
 #include "IngenieroDeSonido.h"
-IngenieroDeSonido::IngenieroDeSonido(string id, string nombre, string email,int xp):
-  Personal(id,nombre,email){
-  aniosExperiencia = xp;
-}
 
-int IngenieroDeSonido::getAniosExperiencia() {
-  return aniosExperiencia;
-}
+IngenieroDeSonido::IngenieroDeSonido(string& id, string& nombre, string& email, int aniosExperiencia)
+    : Personal(id, nombre, email), aniosExperiencia(aniosExperiencia) {}
 
-string IngenieroDeSonido::getEspecialidad() {
-  return "IngenieroDeSonido";
-}
-
-string IngenieroDeSonido::toString() {
-  stringstream ss;
-  ss << "Nombre del artista: " << getNombre()<<endl
-     <<"Especialidad: " << getEspecialidad()<<endl
-     <<"Id: " << getId()<<endl
-     <<"Email: " << getEmail()<<endl
-     <<"Anios de experiencia: " << getAniosExperiencia()<<"\n\n";
-  return ss.str();
+string IngenieroDeSonido::toString() const {
+    stringstream ss;
+    ss << "ID: " << id << endl;
+    ss << "Nombre: " << nombre << endl;
+    ss << "Email: " << email << endl;
+    ss << "Años de experiencia: " << aniosExperiencia << endl;
+    return ss.str();
 }

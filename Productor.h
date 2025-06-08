@@ -4,19 +4,21 @@
 
 #ifndef PRODUCTOR_H
 #define PRODUCTOR_H
-#include"Personal.h"
+#include "Personal.h"
 
 class Productor : public Personal {
 private:
     float presupuesto;
 
 public:
-    Productor(string id, string nombre, string email, int presupuesto);
+    Productor(string& id, string& nombre, string& email, float presupuesto);
+    ~Productor() override = default;
 
-    int getPresupuesto();
-    string getEspecialidad() override;
-    string toString() override;
+    float getPresupuesto() const { return presupuesto; }
+    void setPresupuesto(float nuevo_presupuesto) { presupuesto = nuevo_presupuesto; }
+
+    string getEspecialidad() const override { return "Productor"; }
+    string toString() const override;
 };
-
 
 #endif //PRODUCTOR_H

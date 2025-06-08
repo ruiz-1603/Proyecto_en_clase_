@@ -12,8 +12,8 @@ ListaPersonal::~ListaPersonal() {
   delete this->personal;
 }
 
-void ListaPersonal::agregarPersonal(Personal* per) {
-  personal->agregar(per);
+bool ListaPersonal::agregarPersonal(Personal* per) {
+  return personal->agregar(per);
 }
 
 void ListaPersonal::eliminarPersonal(Personal* per) {
@@ -25,12 +25,12 @@ string ListaPersonal::mostrarPersonal() {
 }
 
 Personal* ListaPersonal::getPersonalPorID(string id) {
-  Nodo<Personal>* actual = personal->getCabeza();
+  Nodo<Personal>* actual = personal->getPrimero();
 
     while (actual != nullptr) {
-        if (actual->dato->getId() == id) {
-            return actual->dato;
+        if (actual->getDato()->getId() == id) {
+            return actual->getDato();
         }
-        actual = actual->siguiente;
+        actual = actual->getSiguiente();
     } return nullptr;
 }

@@ -5,37 +5,33 @@
 #include "ListaPeliculas.h"
 
 ListaPeliculas::ListaPeliculas() {
-  this->peliculas = new Lista<Pelicula>();
+    peliculas = new Lista<Pelicula>;
 }
 
 ListaPeliculas::~ListaPeliculas() {
-  delete this->peliculas;
+    delete peliculas;
 }
 
-bool ListaPeliculas::agregarPelicula(Pelicula* pelicula) {
-    // Verificar si ya existe una película con el mismo título
-    if (getPeliculaPorTitulo(pelicula->getTitulo()) != nullptr) {
-        return false;
-    }
+void ListaPeliculas::agregarPelicula(Pelicula* pelicula) {
     peliculas->agregar(pelicula);
-    return true;
 }
 
-bool ListaPeliculas::eliminarPelicula(Pelicula* pelicula) {
-  return peliculas->eliminar(pelicula);
+void ListaPeliculas::eliminarPelicula(Pelicula* pelicula) {
+    peliculas->eliminar(pelicula);
 }
 
 string ListaPeliculas::mostrarPeliculas() {
-  return peliculas->mostrar();
+    return peliculas->mostrar();
 }
 
 Pelicula* ListaPeliculas::getPeliculaPorTitulo(string titulo) {
-    Nodo<Pelicula>* actual = peliculas->getCabeza();
+    Nodo<Pelicula>* actual = peliculas->getPrimero();
 
     while (actual != nullptr) {
-        if (actual->dato->getTitulo() == titulo) {
-            return actual->dato;
+        if (actual->getDato()->getTitulo() == titulo) {
+            return actual->getDato();
         }
-        actual = actual->siguiente;
-    } return nullptr;
+        actual = actual->getSiguiente();
+    }
+    return nullptr;
 }

@@ -3,25 +3,15 @@
 //
 
 #include "Artista.h"
+
 Artista::Artista(string& id, string& nombre, string& email, string& herramientasDibujo)
-    :Personal(id, nombre, email) {
-      this->herramientasDibujo = herramientasDibujo;
-}
+    : Personal(id, nombre, email), herramientasDibujo(herramientasDibujo) {}
 
-string Artista::getHerramientasDibujo() {
-  return herramientasDibujo;
-}
-
-string Artista::getEspecialidad() {
-  return "Artista";
-}
-
-string Artista::toString() {
-  stringstream ss;
-  ss << "Nombre del artista: " << getNombre()<<endl
-     <<"Especialidad: " << getEspecialidad()<<endl
-     <<"Id: " << getId()<<endl
-     <<"Email: " << getEmail()<<endl
-     <<"Herramientas de dibujo: " << getHerramientasDibujo()<<"\n\n";
+string Artista::toString() const {
+    stringstream ss;
+    ss << "ID: " << id << endl;
+    ss << "Nombre: " << nombre << endl;
+    ss << "Email: " << email << endl;
+    ss << "Herramientas: " << herramientasDibujo << endl;
     return ss.str();
 }
