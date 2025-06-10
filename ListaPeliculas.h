@@ -21,6 +21,7 @@ public:
     string mostrarPeliculas();
 
     Lista<Pelicula>* getPeliculas() { return peliculas; }
+    void setPeliculas(Lista<Pelicula>*);
     Pelicula* getPeliculaPorTitulo(string titulo);
 };
 

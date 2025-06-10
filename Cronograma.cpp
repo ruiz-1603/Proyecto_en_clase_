@@ -67,6 +67,38 @@ double Cronograma::getProgreso() const {
     return (double)completadas / tareas->obtenerTamaño() * 100.0;
 }
 
+void Cronograma::setProgreso(double progreso) {
+    if (tareas->estaVacia()) return;
+
+    // Validar rango del progreso (0-100)
+    if (progreso < 0.0) progreso = 0.0;
+    if (progreso > 100.0) progreso = 100.0;
+
+    int totalTareas = tareas->obtenerTamaño();
+    int tareasACompletar = (int)((progreso / 100.0) * totalTareas);
+
+    // Si el progreso es muy alto, asegurar que se complete al menos una tarea
+    if (progreso > 0.0 && tareasACompletar == 0) {
+        tareasACompletar = 1;
+    }
+
+    int contador = 0;
+    Nodo<TareaProduccion>* actual = tareas->getPrimero();
+
+    // Marcar las primeras 'tareasACompletar' tareas como completas
+    while (actual != nullptr && contador < tareasACompletar) {
+        actual->getDato()->setEstado("completa");
+        actual = actual->getSiguiente();
+        contador++;
+    }
+
+    // Marcar el resto como incompletas
+    while (actual != nullptr) {
+        actual->getDato()->setEstado("incompleta");
+        actual = actual->getSiguiente();
+    }
+}
+
 TareaProduccion* Cronograma::getTarea(int indice) const {
     Nodo<TareaProduccion>* actual = tareas->getPrimero();
     int i = 0;

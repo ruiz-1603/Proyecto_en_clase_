@@ -20,7 +20,9 @@ public:
     void eliminarPersonal(Personal*);
     string mostrarPersonal();
 
+    void setPersonal(Lista<Personal>*);
     Personal* getPersonalPorID(string id);
+    Lista<Personal>* getPersonal();
 };
 
 #endif //LISTAPERSONAL_H

@@ -24,7 +24,7 @@ class Cronograma {
         void marcarTareaCompleta(int indice);
         string mostrarCronograma() const;
         double getProgreso() const;
-        
+        void setProgreso(double progreso);
         // Getters
         int getCantidadTareas() const { return tareas->obtenerTamaño(); }
         TareaProduccion* getTarea(int indice) const;

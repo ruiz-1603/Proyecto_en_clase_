@@ -24,6 +24,11 @@ string ListaPeliculas::mostrarPeliculas() {
     return peliculas->mostrar();
 }
 
+void ListaPeliculas::setPeliculas(Lista<Pelicula> * listaPelis) {
+    delete peliculas;
+    peliculas = listaPelis;
+}
+
 Pelicula* ListaPeliculas::getPeliculaPorTitulo(string titulo) {
     Nodo<Pelicula>* actual = peliculas->getPrimero();
 

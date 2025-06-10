@@ -24,6 +24,11 @@ string ListaPersonal::mostrarPersonal() {
   return personal->mostrar();
 }
 
+void ListaPersonal::setPersonal(Lista<Personal> * listaPersons) {
+  delete personal;
+  personal = listaPersons;
+}
+
 Personal* ListaPersonal::getPersonalPorID(string id) {
   Nodo<Personal>* actual = personal->getPrimero();
 
@@ -33,4 +38,8 @@ Personal* ListaPersonal::getPersonalPorID(string id) {
         }
         actual = actual->getSiguiente();
     } return nullptr;
+}
+
+Lista<Personal> * ListaPersonal::getPersonal() {
+  return personal;
 }

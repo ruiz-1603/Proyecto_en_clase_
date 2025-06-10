@@ -24,6 +24,7 @@ class Pelicula {
       Cronograma* getCronograma() const { return cronograma; }
       string getEstado();
 
+
       // setters
       void setTitulo(string titulo);
       void setCronograma(Cronograma* cronograma);
