@@ -17,11 +17,11 @@
     template<class T>
     class GestorArchivos {
     public:
-        static void guardarPeliculas(Lista<Pelicula>*, const string&);
+        static void guardarPeliculas(ListaPeliculas*, const string&);
         static void guardarPersonal(ListaPersonal*, const string&);
 
-        static Lista<Pelicula>* cargarPeliculas(Lista<Pelicula> *, Lista<Personal> *, const string &nombreArchivo);
-        static Lista<Personal>* cargarPersonal(const string &nombreArchivo);
+        static ListaPeliculas* cargarPeliculas(const string &nombreArchivo);
+        static ListaPersonal* cargarPersonal(const string &nombreArchivo);
 
     };
 

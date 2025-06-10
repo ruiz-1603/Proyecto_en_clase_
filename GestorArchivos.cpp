@@ -4,14 +4,14 @@
 
 #include "GestorArchivos.h"
 template<class T>
-void GestorArchivos<T>::guardarPeliculas(Lista<Pelicula>* listaPeliculas, const string& nombreArchivo) {
+void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, const string& nombreArchivo) {
     ofstream archivo(nombreArchivo, ios::out | ios::app);
     try {
         if (!archivo.is_open()) {
             throw Excepcion("No se pudo abrir el archivo para escritura: " + nombreArchivo);
         }
 
-        Nodo<Pelicula>* actual = listaPeliculas->getPrimero();
+        Nodo<Pelicula>* actual = listaPeliculas->getPeliculas()->getPrimero();
 
         while (actual != nullptr) {
             Pelicula* peli = actual->getDato();
@@ -100,9 +100,10 @@ void GestorArchivos<T>::guardarPersonal(ListaPersonal* listaPersonal, const stri
 
 
 template<class T>
-Lista<Pelicula>* GestorArchivos<T>::cargarPeliculas(Lista<Pelicula>* listaPelis, Lista<Personal>* listaPersons, const string& nombreArchivo) {
+ListaPeliculas* GestorArchivos<T>::cargarPeliculas(const string& nombreArchivo) {
     // Si no se proporciona una lista, crear una nueva
-    Lista<Pelicula>* listaPeliculas = (listaPelis != nullptr) ? listaPelis : new Lista<Pelicula>();
+    ListaPeliculas* listaPeliculas = new ListaPeliculas();
+    ListaPersonal* listaPersons = new ListaPersonal();
 
     ifstream archivo(nombreArchivo);
 
@@ -159,7 +160,7 @@ Lista<Pelicula>* GestorArchivos<T>::cargarPeliculas(Lista<Pelicula>* listaPelis,
                         if (idPersonal.empty() || idPersonal == "-") continue;
 
                         // Buscar el personal por ID en la lista
-                        Nodo<Personal>* actualPersonal = listaPersons->getPrimero();
+                        Nodo<Personal>* actualPersonal = listaPersons->getPersonal()->getPrimero();
                         Personal* miembro = nullptr;
 
                         while (actualPersonal != nullptr && miembro == nullptr) {
@@ -183,7 +184,7 @@ Lista<Pelicula>* GestorArchivos<T>::cargarPeliculas(Lista<Pelicula>* listaPelis,
                 }
 
                 // Agregar película a la lista
-                listaPeliculas->agregar(pelicula);
+                listaPeliculas->agregarPelicula(pelicula);
 
             } catch (const exception& e) {
                 cerr << "Error al crear película '" << titulo << "': " << e.what() << endl;
@@ -202,8 +203,8 @@ Lista<Pelicula>* GestorArchivos<T>::cargarPeliculas(Lista<Pelicula>* listaPelis,
 }
 
 template<class T>
-Lista<Personal>* GestorArchivos<T>::cargarPersonal(const string& nombreArchivo) {
-    Lista<Personal>* listaPersonal = new Lista<Personal>();
+ListaPersonal* GestorArchivos<T>::cargarPersonal(const string& nombreArchivo) {
+    ListaPersonal* listaPersonal = new ListaPersonal();
     ifstream archivo(nombreArchivo);
 
     try {
@@ -248,7 +249,7 @@ Lista<Personal>* GestorArchivos<T>::cargarPersonal(const string& nombreArchivo) 
                 }
 
                 if (persona != nullptr) {
-                    listaPersonal->agregar(persona);
+                    listaPersonal->agregarPersonal(persona);
                 }
             } catch (const exception& e) {
                 cerr << "Error al crear persona de tipo " << tipo << ": " << e.what() << endl;
