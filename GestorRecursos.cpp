@@ -190,6 +190,13 @@ ListaPeliculas* GestorRecursos::getPeliculas() {
     return peliculas;
 }
 
+void GestorRecursos::setPeliculas(ListaPeliculas *pelicula) {
+    peliculas = pelicula;
+}
+
 ListaPersonal* GestorRecursos::getPersonal() {
     return personal;
+}
+void GestorRecursos::setPersonal(ListaPersonal *personal) {
+    this->personal = personal;
 }

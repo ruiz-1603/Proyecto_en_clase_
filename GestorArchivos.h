@@ -17,7 +17,7 @@
     template<class T>
     class GestorArchivos {
     public:
-        static void guardarPeliculas(ListaPeliculas*, const string&);
+        static void guardarPeliculas(ListaPeliculas*, ListaPersonal*, const string&);
         static void guardarPersonal(ListaPersonal*, const string&);
 
         static ListaPeliculas* cargarPeliculas(const string &nombreArchivo);
