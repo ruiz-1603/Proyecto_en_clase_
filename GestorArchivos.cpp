@@ -3,9 +3,9 @@
 //
 
 #include "GestorArchivos.h"
-template<class T>
 
-void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, const string& nombreArchivo) {
+template<class T>
+void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, ListaPersonal* listaPersonal, const string& nombreArchivo) {
     ofstream archivo(nombreArchivo, ios::out | ios::app);
     try {
         if (!archivo.is_open()) {
@@ -17,6 +17,7 @@ void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, const s
         while (actual != nullptr) {
             Pelicula* peli = actual->getDato();
             if (peli != nullptr) {
+                // Guardar información de la película
                 archivo << peli->getTitulo() << ","
                         << peli->getEstado() << ",";
 
@@ -27,12 +28,62 @@ void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, const s
                 }
 
                 archivo << "\n";
+
+                // Extraer el personal de esta película y agregarlo a la lista general
+                Lista<Personal>* equipoPelicula = peli->getEquipo();
+                if (equipoPelicula != nullptr) {
+                    Nodo<Personal>* actualPersonal = equipoPelicula->getPrimero();
+
+                    while (actualPersonal != nullptr) {
+                        Personal* miembro = actualPersonal->getDato();
+                        if (miembro != nullptr) {
+                            // Verificar si el personal ya existe en la lista general (evitar duplicados)
+                            Personal* personalExistente = listaPersonal->getPersonalPorID(miembro->getId());
+                            if (personalExistente == nullptr) {
+                                // Crear una copia del personal para agregarlo a la lista general
+                                Personal* copiaPersonal = nullptr;
+
+                                // Dynamic cast para determinar el tipo y crear la copia apropiada
+                                if (Productor* p = dynamic_cast<Productor*>(miembro)) {
+                                    string aux = p->getId();
+                                    string aux1 = p->getNombre();
+                                    string aux2 = p->getEmail();
+                                    int aux3 = p->getPresupuesto();
+
+                                    copiaPersonal = new Productor(aux, aux1, aux2, aux3);
+                                }
+                                else if (IngenieroDeSonido* ing = dynamic_cast<IngenieroDeSonido*>(miembro)) {
+                                    string tempId = ing->getId();
+                                    string tempNombre = ing->getNombre();
+                                    string tempEmail = ing->getEmail();
+                                    copiaPersonal = new IngenieroDeSonido(tempId, tempNombre, tempEmail, ing->getAniosExperiencia());
+                                }
+                                else if (Artista* a = dynamic_cast<Artista*>(miembro)) {
+                                    string tempId1 = a->getId();
+                                    string tempNombre2 = a->getNombre();
+                                    string tempEmail3 = a->getEmail();
+                                    string temp4 = a->getHerramientasDibujo();
+                                    copiaPersonal = new Artista(tempId1, tempNombre2, tempEmail3, temp4);
+                                }
+
+                                // Agregar la copia a la lista general si se pudo crear
+                                if (copiaPersonal != nullptr) {
+                                    if (!listaPersonal->agregarPersonal(copiaPersonal)) {
+                                        delete copiaPersonal; // Limpiar memoria si no se pudo agregar
+                                    }
+                                }
+                            }
+                        }
+                        actualPersonal = actualPersonal->getSiguiente();
+                    }
+                }
             }
 
             actual = actual->getSiguiente();
         }
 
-        cout << "Peliculas guardadas correctamente en " << nombreArchivo << endl;
+        cout << "Películas guardadas correctamente en " << nombreArchivo << endl;
+        cout << "Personal de las películas agregado a la lista general" << endl;
 
     } catch (const exception& e) {
         cerr << "Error al guardar películas: " << e.what() << endl;
@@ -40,7 +91,6 @@ void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, const s
 
     archivo.close();
 }
-
 
 template<class T>
 void GestorArchivos<T>::guardarPersonal(ListaPersonal* listaPersonal, const string& nombreArchivo) {

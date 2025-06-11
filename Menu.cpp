@@ -66,7 +66,7 @@ void Menu::menuPrincipal() {
         //system("cls");
       cout << "=== GUARDAR ARCHIVOS ===" << endl << endl;
       try {
-        GestorArchivos<Pelicula>::guardarPeliculas(interfaz->getPeliculas(), "peliculas.txt");
+        GestorArchivos<Pelicula>::guardarPeliculas(interfaz->getPeliculas(), interfaz->getPersonal(), "peliculas.txt");
         GestorArchivos<Personal>::guardarPersonal(interfaz->getPersonal(), "personal.txt");
         cout << "Archivos guardados exitosamente" << endl;
 
