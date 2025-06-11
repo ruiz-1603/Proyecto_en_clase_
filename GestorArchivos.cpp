@@ -32,7 +32,7 @@ void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, const s
             actual = actual->getSiguiente();
         }
 
-        cout << "Películas guardadas correctamente en " << nombreArchivo << endl;
+        cout << "Peliculas guardadas correctamente en " << nombreArchivo << endl;
 
     } catch (const exception& e) {
         cerr << "Error al guardar películas: " << e.what() << endl;
