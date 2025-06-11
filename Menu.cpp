@@ -66,10 +66,7 @@ void Menu::menuPrincipal() {
         //system("cls");
       cout << "=== GUARDAR ARCHIVOS ===" << endl << endl;
       try {
-        GestorArchivos<Pelicula>::guardarPeliculas(interfaz->getPeliculas(), interfaz->getPersonal(), "peliculas.txt");
-        GestorArchivos<Personal>::guardarPersonal(interfaz->getPersonal(), "personal.txt");
-        cout << "Archivos guardados exitosamente" << endl;
-
+        guardar();
       } catch (const exception& e) {
         cerr << "Error al guardar archivos: " << e.what() << endl;
       }
@@ -80,8 +77,7 @@ void Menu::menuPrincipal() {
           //system("cls");
         cout << "=== CARGAR ARCHIVOS ===" << endl << endl;
         try {
-          GestorArchivos<Pelicula>::cargarPeliculas("peliculas.txt");
-           GestorArchivos<Personal>::cargarPersonal("personal.txt");
+         cargar();
         } catch (const exception& e) {
           cerr << "Error al cargar archivos: " << e.what() << endl;
         }
@@ -603,4 +599,24 @@ void Menu::marcarTareaCompleta(Pelicula* pelicula) {
   
   cout << "Presione ENTER para continuar";
   cin.get();
+}
+
+void Menu::cargar() {
+  GestorArchivos<Personal>::cargarPersonal("personal.txt", interfaz->getPersonal());
+  GestorArchivos<Pelicula>::cargarPeliculas("peliculas.txt", interfaz->getPeliculas(), interfaz->getPersonal());
+
+
+  cout << "----------- PELICULAS CARGADAS --------------" << endl;
+  cout << interfaz->getPeliculas()->mostrarPeliculas();
+  cout << "----------------------------------------------" << endl;
+  cout << endl;
+  cout << "----------- PERSONAL CARGADO --------------" << endl;
+  cout << interfaz->getPersonal()->mostrarPersonal();
+
+  cout << "Datos cargados correctamente." << endl;
+}
+void Menu::guardar() {
+  GestorArchivos<Pelicula>::guardarPeliculas(interfaz->getPeliculas(), interfaz->getPersonal(), "peliculas.txt");
+  GestorArchivos<Personal>::guardarPersonal(interfaz->getPersonal(), "personal.txt");
+  cout << "Datos guardados correctamente." << endl;
 }

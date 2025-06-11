@@ -26,6 +26,8 @@ private:
   void eliminarPersonalDePelicula(Pelicula* pelicula);
   void asignarTareaAPelicula(Pelicula* pelicula);
   void marcarTareaCompleta(Pelicula* pelicula);
+  void guardar();
+  void cargar();
   Personal* crearProductor();
   Personal* crearArtista();
   Personal* crearIngenieroSonido();
