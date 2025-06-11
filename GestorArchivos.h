@@ -20,8 +20,9 @@
         static void guardarPeliculas(ListaPeliculas*, ListaPersonal*, const string&);
         static void guardarPersonal(ListaPersonal*, const string&);
 
-        static ListaPeliculas* cargarPeliculas(const string &nombreArchivo);
-        static ListaPersonal* cargarPersonal(const string &nombreArchivo);
+        static void cargarPeliculas(const string &nombreArchivo,ListaPeliculas* listaPeliculas, ListaPersonal* listaPersonal);
+        static void cargarPersonal(const string &nombreArchivo,ListaPersonal* listaPersonal);
+
 
     };
 

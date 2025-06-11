@@ -6,7 +6,8 @@
 
 template<class T>
 void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, ListaPersonal* listaPersonal, const string& nombreArchivo) {
-    ofstream archivo(nombreArchivo, ios::out | ios::app);
+    ofstream archivo(nombreArchivo, ios::out); // Usar ios::out para sobrescribir correctamente
+
     try {
         if (!archivo.is_open()) {
             throw Excepcion("No se pudo abrir el archivo para escritura: " + nombreArchivo);
@@ -17,7 +18,6 @@ void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, ListaPe
         while (actual != nullptr) {
             Pelicula* peli = actual->getDato();
             if (peli != nullptr) {
-                // Guardar información de la película
                 archivo << peli->getTitulo() << ","
                         << peli->getEstado() << ",";
 
@@ -27,38 +27,51 @@ void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, ListaPe
                     archivo << "0.00";
                 }
 
-                archivo << "\n";
-
-                // Extraer el personal de esta película y agregarlo a la lista general
+                // Agregar IDs del equipo
                 Lista<Personal>* equipoPelicula = peli->getEquipo();
+                string idsEquipo;
+
+                if (equipoPelicula != nullptr) {
+                    Nodo<Personal>* actualPersonal = equipoPelicula->getPrimero();
+                    while (actualPersonal != nullptr) {
+                        Personal* miembro = actualPersonal->getDato();
+                        if (miembro != nullptr) {
+                            if (!idsEquipo.empty()) idsEquipo += ";";
+                            idsEquipo += miembro->getId();
+                        }
+                        actualPersonal = actualPersonal->getSiguiente();
+                    }
+                }
+
+                if (idsEquipo.empty()) {
+                    archivo << ",-\n";
+                } else {
+                    archivo << "," << idsEquipo << "\n";
+                }
+
+                // Agregar personal a la lista global
                 if (equipoPelicula != nullptr) {
                     Nodo<Personal>* actualPersonal = equipoPelicula->getPrimero();
 
                     while (actualPersonal != nullptr) {
                         Personal* miembro = actualPersonal->getDato();
                         if (miembro != nullptr) {
-                            // Verificar si el personal ya existe en la lista general (evitar duplicados)
                             Personal* personalExistente = listaPersonal->getPersonalPorID(miembro->getId());
                             if (personalExistente == nullptr) {
-                                // Crear una copia del personal para agregarlo a la lista general
                                 Personal* copiaPersonal = nullptr;
 
-                                // Dynamic cast para determinar el tipo y crear la copia apropiada
                                 if (Productor* p = dynamic_cast<Productor*>(miembro)) {
                                     string aux = p->getId();
                                     string aux1 = p->getNombre();
                                     string aux2 = p->getEmail();
-                                    int aux3 = p->getPresupuesto();
 
-                                    copiaPersonal = new Productor(aux, aux1, aux2, aux3);
-                                }
-                                else if (IngenieroDeSonido* ing = dynamic_cast<IngenieroDeSonido*>(miembro)) {
+                                    copiaPersonal = new Productor(aux,aux1,aux2, p->getPresupuesto());
+                                } else if (IngenieroDeSonido* ing = dynamic_cast<IngenieroDeSonido*>(miembro)) {
                                     string tempId = ing->getId();
                                     string tempNombre = ing->getNombre();
                                     string tempEmail = ing->getEmail();
                                     copiaPersonal = new IngenieroDeSonido(tempId, tempNombre, tempEmail, ing->getAniosExperiencia());
-                                }
-                                else if (Artista* a = dynamic_cast<Artista*>(miembro)) {
+                                } else if (Artista* a = dynamic_cast<Artista*>(miembro)) {
                                     string tempId1 = a->getId();
                                     string tempNombre2 = a->getNombre();
                                     string tempEmail3 = a->getEmail();
@@ -66,10 +79,9 @@ void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, ListaPe
                                     copiaPersonal = new Artista(tempId1, tempNombre2, tempEmail3, temp4);
                                 }
 
-                                // Agregar la copia a la lista general si se pudo crear
                                 if (copiaPersonal != nullptr) {
                                     if (!listaPersonal->agregarPersonal(copiaPersonal)) {
-                                        delete copiaPersonal; // Limpiar memoria si no se pudo agregar
+                                        delete copiaPersonal;
                                     }
                                 }
                             }
@@ -78,12 +90,10 @@ void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, ListaPe
                     }
                 }
             }
-
             actual = actual->getSiguiente();
         }
 
-        cout << "Películas guardadas correctamente en " << nombreArchivo << endl;
-        cout << "Personal de las películas agregado a la lista general" << endl;
+        cout << "Peliculas guardadas correctamente en " << nombreArchivo << endl;
 
     } catch (const exception& e) {
         cerr << "Error al guardar películas: " << e.what() << endl;
@@ -91,6 +101,7 @@ void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, ListaPe
 
     archivo.close();
 }
+
 
 template<class T>
 void GestorArchivos<T>::guardarPersonal(ListaPersonal* listaPersonal, const string& nombreArchivo) {
@@ -154,10 +165,9 @@ void GestorArchivos<T>::guardarPersonal(ListaPersonal* listaPersonal, const stri
 
 
 template<class T>
-ListaPeliculas* GestorArchivos<T>::cargarPeliculas(const string& nombreArchivo) {
-    // Si no se proporciona una lista, crear una nueva
-    ListaPeliculas* listaPeliculas = new ListaPeliculas();
-    ListaPersonal* listaPersons = new ListaPersonal();
+void GestorArchivos<T>::cargarPeliculas(const string& nombreArchivo, ListaPeliculas* listaPeliculas, ListaPersonal* listaPersonal) {
+
+    // Cargar personal desde archivo
 
     ifstream archivo(nombreArchivo);
 
@@ -167,16 +177,8 @@ ListaPeliculas* GestorArchivos<T>::cargarPeliculas(const string& nombreArchivo) 
         }
 
         string linea;
-        // Saltar encabezado si existe
-        if (getline(archivo, linea) && linea.find("Titulo") != string::npos) {
-            // Es un encabezado, continuar
-        } else {
-            // No es encabezado, procesar esta línea
-            archivo.seekg(0); // Volver al inicio
-        }
-
         while (getline(archivo, linea)) {
-            if (linea.empty()) continue; // Saltar líneas vacías
+            if (linea.empty()) continue;
 
             stringstream ss(linea);
             string titulo, estado, progresoStr, equipoStr;
@@ -184,81 +186,60 @@ ListaPeliculas* GestorArchivos<T>::cargarPeliculas(const string& nombreArchivo) 
             getline(ss, titulo, ',');
             getline(ss, estado, ',');
             getline(ss, progresoStr, ',');
-            getline(ss, equipoStr); // IDs del equipo separados por ';'
+            getline(ss, equipoStr);
 
-            // Validar datos básicos
-            if (titulo.empty()) {
-                cerr << "Película sin título, saltando línea..." << endl;
-                continue;
+            if (titulo.empty()) continue;
+
+            Pelicula* pelicula = new Pelicula(titulo);
+
+            if (!progresoStr.empty() && progresoStr != "0.00") {
+                float progreso = stof(progresoStr);
+                if (pelicula->getCronograma() != nullptr) {
+                    pelicula->getCronograma()->setProgreso(progreso);
+                }
             }
 
-            try {
-                // Crear la película
-                Pelicula* pelicula = new Pelicula(titulo);
+            if (!equipoStr.empty() && equipoStr != "-") {
+                stringstream ssEquipo(equipoStr);
+                string idPersonal;
 
-                // Configurar el progreso si está disponible
-                if (!progresoStr.empty() && progresoStr != "0.00") {
-                    float progreso = stof(progresoStr);
-                    if (pelicula->getCronograma() != nullptr) {
-                        pelicula->getCronograma()->setProgreso(progreso);
+                while (getline(ssEquipo, idPersonal, ';')) {
+                    if (idPersonal.empty()) continue;
+
+                    Nodo<Personal>* actualPersonal = listaPersonal->getPersonal()->getPrimero();
+                    Personal* miembro = nullptr;
+
+                    while (actualPersonal != nullptr) {
+                        if (actualPersonal->getDato()->getId() == idPersonal) {
+                            miembro = actualPersonal->getDato();
+                            break;
+                        }
+                        actualPersonal = actualPersonal->getSiguiente();
+                    }
+
+                    if (miembro != nullptr) {
+                        pelicula->agregarMiembro(miembro);
+                    } else {
+                        cerr << "No se encontro personal con ID: " << idPersonal << endl;
                     }
                 }
-
-                // Asignar personal a la película
-                if (!equipoStr.empty() && equipoStr != "-" && listaPersons != nullptr) {
-                    // Dividir los IDs del equipo (formato: "id1;id2;id3")
-                    stringstream ssEquipo(equipoStr);
-                    string idPersonal;
-
-                    while (getline(ssEquipo, idPersonal, ';')) {
-                        if (idPersonal.empty() || idPersonal == "-") continue;
-
-                        // Buscar el personal por ID en la lista
-                        Nodo<Personal>* actualPersonal = listaPersons->getPersonal()->getPrimero();
-                        Personal* miembro = nullptr;
-
-                        while (actualPersonal != nullptr && miembro == nullptr) {
-                            Personal* persona = actualPersonal->getDato();
-                            if (persona != nullptr && persona->getId() == idPersonal) {
-                                miembro = persona;
-                            }
-                            actualPersonal = actualPersonal->getSiguiente();
-                        }
-
-                        // Agregar miembro a la película si se encontró
-                        if (miembro != nullptr) {
-                            if (!pelicula->agregarMiembro(miembro)) {
-                                cerr << "No se pudo agregar el miembro con ID " << idPersonal
-                                     << " a la película " << pelicula->getTitulo() << endl;
-                            }
-                        } else {
-                            cerr << "Personal con ID " << idPersonal << " no encontrado" << endl;
-                        }
-                    }
-                }
-
-                // Agregar película a la lista
-                listaPeliculas->agregarPelicula(pelicula);
-
-            } catch (const exception& e) {
-                cerr << "Error al crear película '" << titulo << "': " << e.what() << endl;
-                continue;
             }
+
+            listaPeliculas->agregarPelicula(pelicula);
         }
 
-        cout << "Películas cargadas correctamente desde " << nombreArchivo << endl;
+        cout << "Peliculas cargadas correctamente desde " << nombreArchivo << endl;
 
     } catch (const exception& e) {
-        cerr << "Error al cargar películas: " << e.what() << endl;
+        cerr << "Error al cargar peliculas: " << e.what() << endl;
     }
 
     archivo.close();
-    return listaPeliculas;
 }
 
+
 template<class T>
-ListaPersonal* GestorArchivos<T>::cargarPersonal(const string& nombreArchivo) {
-    ListaPersonal* listaPersonal = new ListaPersonal();
+void GestorArchivos<T>::cargarPersonal(const string& nombreArchivo,ListaPersonal* listaPersonal) {
     ifstream archivo(nombreArchivo);
 
     try {
@@ -315,5 +296,4 @@ ListaPersonal* GestorArchivos<T>::cargarPersonal(const string& nombreArchivo) {
     }
 
     archivo.close();
-    return listaPersonal;
 }
