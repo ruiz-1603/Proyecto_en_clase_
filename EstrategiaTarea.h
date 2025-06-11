@@ -16,6 +16,8 @@ public:
     
     // Método para obtener los requisitos específicos de la tarea
     virtual string obtenerRequisitos() = 0;
+    //Virtual para ToString de Personal
+    virtual string getTipo() = 0;
 };
 
 #endif //ESTRATEGIATAREA_H 

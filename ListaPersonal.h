@@ -23,6 +23,8 @@ public:
     void setPersonal(Lista<Personal>*);
     Personal* getPersonalPorID(string id);
     Lista<Personal>* getPersonal();
+
+    Nodo<Personal> *getPrimeroNodo();
 };
 
 #endif //LISTAPERSONAL_H

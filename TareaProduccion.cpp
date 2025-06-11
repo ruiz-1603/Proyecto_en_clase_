@@ -68,3 +68,7 @@ string TareaProduccion::mostrarTarea() const {
 bool TareaProduccion::validarEstado(string& estado) const {
     return estado == "completa" || estado == "incompleta";
 }
+
+string TareaProduccion::getTipoEstrategia() const {
+    estrategia->getTipo();
+}

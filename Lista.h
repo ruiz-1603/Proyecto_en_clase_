@@ -75,7 +75,25 @@ public:
 
         return ss.str();
     }
+    string mostrar2() const {
+        stringstream ss;
 
+        if (tamaño == 0) {
+            ss << "No hay elementos en la lista." << endl;
+            return ss.str();
+        }
+
+        Nodo<T>* actual = cabeza;
+        while (actual != nullptr) {
+            T* datoPtr = actual->getDato();  // datoPtr es T*
+            if (datoPtr != nullptr && *datoPtr != nullptr) {
+                ss << (*datoPtr)->mostrarTarea();
+            }
+            actual = actual->getSiguiente();
+        }
+
+        return ss.str();
+    }
     bool eliminar(T* elemento) {
         if (cabeza == nullptr || elemento == nullptr) return false;
 

@@ -47,6 +47,9 @@ public:
         }
         return ss.str();
     }
+    string getTipo() override {
+        return "Estrategia de Sonido";
+    }
 };
 
 #endif //ESTRATEGIATAREASONIDO_H 

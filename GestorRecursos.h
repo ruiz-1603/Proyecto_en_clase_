@@ -17,6 +17,7 @@ class GestorRecursos {
 private:
     ListaPeliculas* peliculas;
     ListaPersonal* personal;
+    Lista<TareaProduccion *> tareas;
 
 public:
     GestorRecursos();
@@ -38,8 +39,11 @@ public:
     // getters de listas
     ListaPeliculas* getPeliculas();
     void setPeliculas(ListaPeliculas* peliculas);
-    ListaPersonal* getPersonal();
+
+    ListaPersonal *getPersonal();
     void setPersonal(ListaPersonal* personal);
+
+    Lista<TareaProduccion*>& getTareas();
 };
 
 #endif //GESTORRECURSOS_H

@@ -43,3 +43,7 @@ Personal* ListaPersonal::getPersonalPorID(string id) {
 Lista<Personal> * ListaPersonal::getPersonal() {
   return personal;
 }
+
+Nodo<Personal> *ListaPersonal::getPrimeroNodo() {
+  return personal->getPrimero();
+}

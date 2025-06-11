@@ -7,6 +7,7 @@
 GestorRecursos::GestorRecursos() {
     peliculas = new ListaPeliculas();
     personal = new ListaPersonal();
+    tareas = Lista<TareaProduccion*>();
 }
 
 GestorRecursos::~GestorRecursos() {
@@ -194,9 +195,13 @@ void GestorRecursos::setPeliculas(ListaPeliculas *pelicula) {
     peliculas = pelicula;
 }
 
-ListaPersonal* GestorRecursos::getPersonal() {
+ListaPersonal *GestorRecursos::getPersonal() {
     return personal;
 }
 void GestorRecursos::setPersonal(ListaPersonal *personal) {
     this->personal = personal;
+}
+
+Lista<TareaProduccion*>& GestorRecursos::getTareas() {
+    return tareas;
 }

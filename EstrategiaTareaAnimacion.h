@@ -43,6 +43,9 @@ public:
         }
         return ss.str();
     }
+    string getTipo() override {
+        return "Estrate de Animacion";
+    }
 };
 
-#endif //ESTRATEGIATAREAANIMACION_H 
+#endif //ESTRATEGIATAREAANIMACION_H

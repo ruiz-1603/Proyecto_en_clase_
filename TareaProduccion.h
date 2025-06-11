@@ -35,6 +35,8 @@ class TareaProduccion {
 
         string mostrarTarea() const;
         bool validarEstado(string& estado) const;
+
+        string getTipoEstrategia() const;
 };
 
 #endif //TAREAPRODUCCION_H
