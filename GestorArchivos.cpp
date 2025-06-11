@@ -4,6 +4,7 @@
 
 #include "GestorArchivos.h"
 template<class T>
+
 void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, const string& nombreArchivo) {
     ofstream archivo(nombreArchivo, ios::out | ios::app);
     try {
@@ -39,6 +40,7 @@ void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, const s
 
     archivo.close();
 }
+
 
 template<class T>
 void GestorArchivos<T>::guardarPersonal(ListaPersonal* listaPersonal, const string& nombreArchivo) {
@@ -97,6 +99,8 @@ void GestorArchivos<T>::guardarPersonal(ListaPersonal* listaPersonal, const stri
 
     archivo.close();
 }
+
+#include "GestorArchivos.h"
 
 
 template<class T>

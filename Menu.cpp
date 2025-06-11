@@ -4,6 +4,8 @@
 
 #include "Menu.h"
 
+#include "GestorArchivos.cpp"
+
 Menu::Menu() {
   this->interfaz = new GestorRecursos();
 }
@@ -15,12 +17,14 @@ void Menu::menuPrincipal() {
   int opcion = -1;
 
   while (opcion != 0) {
-    system("cls");
+    //system("cls");
     cout << "=== GESTOR DE PRODUCCION PIXAR ===" << endl << endl;
     cout << "1. Agregar Pelicula" << endl;
     cout << "2. Seleccionar Pelicula" << endl;
     cout << "3. Ver Peliculas" << endl;
     cout << "4. Eliminar Pelicula" << endl;
+    cout << "5. Guardar archivo" << endl;
+    cout << "6. Cargar archivo" << endl;
     cout << "0. Salir" << endl << endl;
     cout << "Ingrese una opcion: ";
     cin >> opcion;
@@ -38,42 +42,68 @@ void Menu::menuPrincipal() {
 
     switch (opcion) {
       case 1:
-        system("cls");
-        interfaz->agregarPelicula();
-        break;
+        //system("cls");
+      interfaz->agregarPelicula();
+      break;
       case 2:
-        system("cls");
+        //system("cls");
         seleccionarPelicula();
-        break;
+      break;
       case 3:
-        system("cls");
-        cout << "=== PELICULAS DISPONIBLES ===" << endl << endl;
-        cout << "----------------------------------------" << endl;
-        cout << interfaz->mostrarPeliculas();
-        cout << "----------------------------------------" << endl;
+        //system("cls");
+      cout << "=== PELICULAS DISPONIBLES ===" << endl << endl;
+      cout << "----------------------------------------" << endl;
+      cout << interfaz->mostrarPeliculas();
+      cout << "----------------------------------------" << endl;
+      cout << endl << "Presione ENTER para continuar";
+      cin.get();
+      break;
+      case 4:
+        //system("cls");
+      interfaz->eliminarPelicula();
+      break;
+      case 5:
+        //system("cls");
+      cout << "=== GUARDAR ARCHIVOS ===" << endl << endl;
+      try {
+        GestorArchivos<Pelicula>::guardarPeliculas(interfaz->getPeliculas(), "peliculas.txt");
+        GestorArchivos<Personal>::guardarPersonal(interfaz->getPersonal(), "personal.txt");
+        cout << "Archivos guardados exitosamente" << endl;
+
+      } catch (const exception& e) {
+        cerr << "Error al guardar archivos: " << e.what() << endl;
+      }
+      cout << endl << "Presione ENTER para continuar";
+      cin.get();
+      break;
+        case 6:
+          //system("cls");
+        cout << "=== CARGAR ARCHIVOS ===" << endl << endl;
+        try {
+          GestorArchivos<Pelicula>::cargarPeliculas("peliculas.txt");
+           GestorArchivos<Personal>::cargarPersonal("personal.txt");
+        } catch (const exception& e) {
+          cerr << "Error al cargar archivos: " << e.what() << endl;
+        }
         cout << endl << "Presione ENTER para continuar";
         cin.get();
         break;
-      case 4:
-        system("cls");
-        interfaz->eliminarPelicula();
-        break;
-      case 0:
-        break;
-      default:
-        cout << "Opcion invalida. Intente de nuevo." << endl;
+        case 0:
+          break;
+        default:
+          cout << "Opcion invalida. Intente de nuevo." << endl;
         cout << "Presione ENTER para continuar";
         cin.get();
         break;
+      }
     }
   }
-}
 
 void Menu::seleccionarPelicula() {
   string titulo;
   string listaPeliculas = interfaz->mostrarPeliculas();
 
-  system("cls");
+  //system("cls");
   cout << "=== SELECCIONAR PELICULA ===" << endl << endl;
   cout << "----------------------------------------" << endl;
   cout << "Peliculas disponibles:" << endl;
@@ -110,7 +140,7 @@ void Menu::menuPelicula(Pelicula* pelicula) {
   int opcion = -1;
 
   while (opcion != 0) {
-    system("cls");
+    //system("cls");
     cout << "=== MENU PELICULA ===" << endl;
     cout << "----------------------------------------" << endl;
     cout << pelicula->toString();
@@ -139,11 +169,11 @@ void Menu::menuPelicula(Pelicula* pelicula) {
 
     switch (opcion) {
       case 1:
-        system("cls");
+        //system("cls");
         menuPersonal(pelicula);
         break;
       case 2:
-        system("cls");
+        //system("cls");
         menuCronograma(pelicula);
         break;
       case 0:
@@ -161,7 +191,7 @@ void Menu::menuPersonal(Pelicula* pelicula) {
   int opcion = -1;
 
   while (opcion != 0) {
-    system("cls");
+    //system("cls");
     cout << "=== MENU PERSONAL ===" << endl;
     cout << "----------------------------------------" << endl;
     cout << "Pelicula: " << pelicula->getTitulo() << endl;
@@ -194,15 +224,15 @@ void Menu::menuPersonal(Pelicula* pelicula) {
 
     switch (opcion) {
       case 1:
-        system("cls");
+        //system("cls");
         agregarPersonalAPelicula(pelicula);
         break;
       case 2:
-        system("cls");
+        //system("cls");
         eliminarPersonalDePelicula(pelicula);
         break;
       case 3:
-        system("cls");
+        //system("cls");
         cout << "=== PERSONAL DE LA PELICULA ===" << endl;
         cout << "----------------------------------------" << endl;
         cout << "Pelicula: " << pelicula->getTitulo() << endl << endl;
@@ -226,7 +256,7 @@ void Menu::agregarPersonalAPelicula(Pelicula* pelicula) {
   int opcion = -1;
 
   while (opcion != 0) {
-    system("cls");
+    //system("cls");
     cout << "=== AGREGAR PERSONAL ===" << endl;
     cout << "----------------------------------------" << endl;
     cout << "Pelicula: " << pelicula->getTitulo() << endl;
@@ -258,15 +288,15 @@ void Menu::agregarPersonalAPelicula(Pelicula* pelicula) {
 
     switch (opcion) {
       case 1:
-        system("cls");
+        //system("cls");
         nuevoMiembro = crearProductor();
         break;
       case 2:
-        system("cls");
+        //system("cls");
         nuevoMiembro = crearArtista();
         break;
       case 3:
-        system("cls");
+        //system("cls");
         nuevoMiembro = crearIngenieroSonido();
         break;
       case 0:
@@ -294,7 +324,7 @@ void Menu::agregarPersonalAPelicula(Pelicula* pelicula) {
 }
 
 void Menu::eliminarPersonalDePelicula(Pelicula* pelicula) {
-  system("cls");
+  //system("cls");
   string id;
 
   cout << "Personal de " << pelicula->getTitulo() << endl << endl;
@@ -372,7 +402,7 @@ void Menu::menuCronograma(Pelicula* pelicula) {
   int opcion = -1;
 
   while (opcion != 0) {
-    system("cls");
+    //system("cls");
     cout << "=== MENU CRONOGRAMA ===" << endl;
     cout << "----------------------------------------" << endl;
     cout << "Pelicula: " << pelicula->getTitulo() << endl;
@@ -407,15 +437,15 @@ void Menu::menuCronograma(Pelicula* pelicula) {
 
     switch (opcion) {
       case 1:
-        system("cls");
+        //system("cls");
         asignarTareaAPelicula(pelicula);
         break;
       case 2:
-        system("cls");
+        //system("cls");
         marcarTareaCompleta(pelicula);
         break;
       case 3:
-        system("cls");
+        //system("cls");
         cout << "=== CRONOGRAMA DETALLADO ===" << endl;
         cout << "----------------------------------------" << endl;
         cout << "Pelicula: " << pelicula->getTitulo() << endl;
@@ -442,7 +472,7 @@ void Menu::asignarTareaAPelicula(Pelicula* pelicula) {
   string id;
   int tipoEstrategia;
 
-  system("cls");
+  //system("cls");
   cout << "=== AGREGAR TAREA ===" << endl;
   cout << "----------------------------------------" << endl;
   cout << "Pelicula: " << pelicula->getTitulo() << endl;
@@ -541,7 +571,7 @@ void Menu::asignarTareaAPelicula(Pelicula* pelicula) {
 void Menu::marcarTareaCompleta(Pelicula* pelicula) {
   int indice;
   
-  system("cls");
+  //system("cls");
   cout << "=== MARCAR TAREA COMO COMPLETA ===" << endl;
   cout << "----------------------------------------" << endl;
   cout << "Pelicula: " << pelicula->getTitulo() << endl;

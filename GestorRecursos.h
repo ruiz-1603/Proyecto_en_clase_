@@ -37,7 +37,9 @@ public:
 
     // getters de listas
     ListaPeliculas* getPeliculas();
+    void setPeliculas(ListaPeliculas* peliculas);
     ListaPersonal* getPersonal();
+    void setPersonal(ListaPersonal* personal);
 };
 
 #endif //GESTORRECURSOS_H
