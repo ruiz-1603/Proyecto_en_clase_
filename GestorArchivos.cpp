@@ -330,6 +330,7 @@ void GestorArchivos<T>::cargarPersonal(const string& nombreArchivo,ListaPersonal
                 continue;
             }
         }
+        cout << "Personal cargadas correctamente desde " << nombreArchivo << endl;
     } catch (const exception& e) {
         cerr << "Error al cargar personal: " << e.what() << endl;
     }
