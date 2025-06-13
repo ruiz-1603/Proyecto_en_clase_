@@ -36,7 +36,7 @@ void Cronograma::marcarTareaCompleta(int indice) {
 string Cronograma::mostrarCronograma() const {
     stringstream ss;
     Nodo<TareaProduccion>* actual = tareas->getPrimeroNodo();
-    int i = 0;
+    int i = 1;
 
     if (actual == nullptr) {
         ss << "No hay tareas en el cronograma." << endl;

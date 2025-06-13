@@ -35,15 +35,15 @@ public:
     string obtenerRequisitos() override {
         stringstream ss;
         ss << "Tipo de Sonido: " << tipoSonido << endl;
-        ss << "Duración: " << duracionMinutos << " minutos" << endl;
+        ss << "Duracion: " << duracionMinutos << " minutos" << endl;
         ss << "Requisitos:" << endl;
-        ss << "- Equipo de grabación profesional" << endl;
+        ss << "- Equipo de grabacion profesional" << endl;
         ss << "- Software de edición de audio" << endl;
         if (tipoSonido == "Voces") {
-            ss << "- Estudio de grabación con aislamiento acústico" << endl;
+            ss << "- Estudio de grabacion con aislamiento acustico" << endl;
         }
         if (tipoSonido == "Mezcla") {
-            ss << "- Experiencia en masterización" << endl;
+            ss << "- Experiencia en masterizacion" << endl;
         }
         return ss.str();
     }
