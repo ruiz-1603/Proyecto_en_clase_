@@ -27,6 +27,9 @@ private:
   void asignarTareaAPelicula(Pelicula* pelicula);
   void marcarTareaCompleta(Pelicula* pelicula);
   void guardar();
+
+  bool esNumero(const string &entrada);
+
   void cargar();
   Personal* crearProductor();
   Personal* crearArtista();

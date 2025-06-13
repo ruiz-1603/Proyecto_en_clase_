@@ -38,7 +38,7 @@ public:
         ss << "Duracion: " << duracionMinutos << " minutos" << endl;
         ss << "Requisitos:" << endl;
         ss << "- Equipo de grabacion profesional" << endl;
-        ss << "- Software de edición de audio" << endl;
+        ss << "- Software de edicion de audio" << endl;
         if (tipoSonido == "Voces") {
             ss << "- Estudio de grabacion con aislamiento acustico" << endl;
         }

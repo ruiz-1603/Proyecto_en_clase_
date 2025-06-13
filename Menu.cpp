@@ -126,7 +126,7 @@ void Menu::seleccionarPelicula() {
       cin.get();
     }
   } catch (const exception& e) {
-    cout << "Error al seleccionar la pelicula: " << e.what() << endl;
+    cout << "Error: " << e.what() << endl;
     cout << "Presione ENTER para continuar";
     cin.get();
   }
@@ -347,15 +347,22 @@ Personal* Menu::crearProductor() {
   float presupuesto;
   string id, nombre, email;
 
-  cout << "Ingrese el ID del productor: ";
-  cin >> id;
-  cin.ignore();
   cout << "Ingrese el nombre del productor: ";
   getline(cin, nombre);
+  cout << "Ingrese el ID del productor: ";
+  cin >> id;
+  if (!esNumero(id)) {
+    throw Excepcion("El ID debe ser un numero");
+  }
+  cin.ignore();
+
   cout << "Ingrese el email del productor: ";
   getline(cin, email);
   cout << "Ingrese el presupuesto del productor: ";
   cin >> presupuesto;
+  if (!presupuesto) {
+    throw Excepcion("el presupuesto debe ser un numero");
+  }
   cin.ignore();
 
   return new Productor(id, nombre, email, presupuesto);
@@ -364,11 +371,14 @@ Personal* Menu::crearProductor() {
 Personal* Menu::crearArtista() {
   string id, nombre, email, herramientasDibujo;
 
-  cout << "Ingrese el ID del artista: ";
-  cin >> id;
-  cin.ignore();
   cout << "Ingrese el nombre del artista: ";
   getline(cin, nombre);
+  cout << "Ingrese el ID del artista: ";
+  cin >> id;
+  if (!esNumero(id)) {
+    throw Excepcion("El ID debe ser un numero");
+  }
+  cin.ignore();
   cout << "Ingrese el email del artista: ";
   getline(cin, email);
   cout << "Ingrese las herramientas de dibujo del artista: ";
@@ -381,15 +391,21 @@ Personal* Menu::crearIngenieroSonido() {
   string id, nombre, email;
   int aniosExp;
 
-  cout << "Ingrese el ID del ingeniero de sonido: ";
-  cin >> id;
-  cin.ignore();
   cout << "Ingrese el nombre del ingeniero de sonido: ";
   getline(cin, nombre);
+  cout << "Ingrese el ID del ingeniero de sonido: ";
+  cin >> id;
+  if (!esNumero(id)) {
+    throw Excepcion("El ID debe ser un numero");
+  }
+  cin.ignore();
   cout << "Ingrese el email del ingeniero de sonido: ";
   getline(cin, email);
   cout << "Ingrese los anios de experiencia del ingeniero de sonido: ";
   cin >> aniosExp;
+  if (!aniosExp) {
+    throw Excepcion("Debe ser un numero con decimales");
+  }
 
   return new IngenieroDeSonido(id, nombre, email, aniosExp);
 }
@@ -623,4 +639,11 @@ void Menu::guardar() {
   GestorArchivos<Personal>::guardarPersonal(interfaz->getPersonal(), "personal.txt");
   GestorArchivos<TareaProduccion>::guardarTareas(interfaz->getTareas(), "tareas.txt");
   cout << "Datos guardados correctamente." << endl;
+}
+bool Menu::esNumero(const string& entrada) {
+  if (entrada.empty()) return false;
+  for (char c : entrada) {
+    if (!isdigit(c)) return false;
+  }
+  return true;
 }
