@@ -202,7 +202,7 @@ void GestorArchivos<T>::guardarTareas(ListaTareas* ListaTareas, const string &no
                 archivo << "\n";
             }
             else {
-                cout << "  - Tarea es nullptr" << endl;
+                cout << "  La tarea esta vacia" << endl;
             }
             actual = actual->getSiguiente();
         }
@@ -373,7 +373,7 @@ void GestorArchivos<T>::cargarTareas(const string &nombreArchivo, ListaTareas* L
             param2.erase(remove(param2.begin(), param2.end(), '\n'), param2.end());
             // Validar datos básicos
             if (descripcion.empty() || tipoEstrategia.empty()) {
-                cerr << "Línea con datos incompletos, saltando..." << endl;
+                cerr << "Linea con datos incompletos, saltando..." << endl;
                 continue;
             }
 
@@ -391,7 +391,7 @@ void GestorArchivos<T>::cargarTareas(const string &nombreArchivo, ListaTareas* L
                     }
 
                     if (responsable == nullptr) {
-                        cerr << "No se encontró personal con ID: " << idResponsable << endl;
+                        cerr << "No se encontro personal con ID: " << idResponsable << endl;
                         continue;
                     }
                 }
@@ -413,15 +413,14 @@ void GestorArchivos<T>::cargarTareas(const string &nombreArchivo, ListaTareas* L
                 // Crear la tarea con el constructor original
                 TareaProduccion* tarea = new TareaProduccion(descripcion, responsable, estrategia);
 
-                // Ajustar el estado si es necesario (ya que el constructor lo pone en "incompleta")
                 if (estado == "completa") {
-                    tarea->setEstado("completa"); // Asumiendo que tienes este método
+                    tarea->setEstado("completa");
                 }
 
                 ListaTareas->agregarTarea(tarea);
 
             } catch (const exception& e) {
-                cerr << "Error al procesar línea de tarea: " << e.what() << endl;
+                cerr << "Error al procesar linea de tarea: " << e.what() << endl;
                 continue;
             }
         }
