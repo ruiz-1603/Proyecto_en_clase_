@@ -484,7 +484,7 @@ void Menu::asignarTareaAPelicula(Pelicula* pelicula) {
 
   Personal* responsable = pelicula->getMiembroPorID(id);
   if (!responsable) {
-    cout << "No se encontró el personal con ese ID." << endl;
+    cout << "No se encontro el personal con ese ID." << endl;
     cout << "Presione ENTER para continuar";
     cin.get();
     return;
