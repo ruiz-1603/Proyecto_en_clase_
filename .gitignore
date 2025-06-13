@@ -1,1 +1,5 @@
-cmake-build-debug
+.vs/
+.vscode/
+cmake-build-debug/
+out/
+programa.exe
