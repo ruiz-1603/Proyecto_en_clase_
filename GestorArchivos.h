@@ -6,6 +6,7 @@
 #define GESTORARCHIVOS_H
 #include "ListaPeliculas.h"
 #include"ListaPersonal.h"
+#include"ListaTareas.h"
 #include"Excepcion.h"
 #include"Productor.h"
 #include"IngenieroDeSonido.h"
@@ -20,11 +21,11 @@
     public:
         static void guardarPeliculas(ListaPeliculas*, ListaPersonal*, const string&);
         static void guardarPersonal(ListaPersonal*, const string&);
-        static void guardarTareas(Lista<TareaProduccion*>* ListaTareas, const string& nombreArchivo);
+        static void guardarTareas(ListaTareas* ListaTareas, const string& nombreArchivo);
 
         static void cargarPeliculas(const string &nombreArchivo,ListaPeliculas* listaPeliculas, ListaPersonal* listaPersonal);
         static void cargarPersonal(const string &nombreArchivo,ListaPersonal* listaPersonal);
-        static void cargarTareas(const string &nombreArchivo, Lista<TareaProduccion*>* ListaTareas,ListaPersonal* listaPersonal);
+        static void cargarTareas(const string &nombreArchivo, ListaTareas* ListaTareas,ListaPersonal* listaPersonal);
 
 
     };

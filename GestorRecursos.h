@@ -9,6 +9,7 @@
 #include "Utilities.h"
 #include "ListaPersonal.h"
 #include "ListaPeliculas.h"
+#include "ListaTareas.h"
 #include "Productor.h"
 #include "Artista.h"
 #include "IngenieroDeSonido.h"
@@ -17,7 +18,7 @@ class GestorRecursos {
 private:
     ListaPeliculas* peliculas;
     ListaPersonal* personal;
-    Lista<TareaProduccion *> tareas;
+    ListaTareas* tareas;
 
 public:
     GestorRecursos();
@@ -43,7 +44,7 @@ public:
     ListaPersonal *getPersonal();
     void setPersonal(ListaPersonal* personal);
 
-    Lista<TareaProduccion*>& getTareas();
+    ListaTareas* getTareas() { return tareas; }
 };
 
 #endif //GESTORRECURSOS_H

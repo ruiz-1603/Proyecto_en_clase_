@@ -16,4 +16,6 @@ add_executable(Proyecto_en_clase
         Pelicula.cpp
         Personal.cpp
         Productor.cpp
-        TareaProduccion.cpp)
+        TareaProduccion.cpp
+        ListaTareas.cpp
+        ListaTareas.h)

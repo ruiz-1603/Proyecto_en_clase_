@@ -5,10 +5,11 @@
 #include "GestorArchivos.h"
 #include "EstrategiaTareaAnimacion.h"
 #include "EstrategiaTareaSonido.h"
+#include <algorithm>
 
 template<class T>
 void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, ListaPersonal* listaPersonal, const string& nombreArchivo) {
-    ofstream archivo(nombreArchivo, ios::out); // Usar ios::out para sobrescribir correctamente
+    ofstream archivo(nombreArchivo, ios::out | ios::trunc); // Usar ios::out para sobrescribir correctamente
 
     try {
         if (!archivo.is_open()) {
@@ -107,7 +108,7 @@ void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, ListaPe
 
 template<class T>
 void GestorArchivos<T>::guardarPersonal(ListaPersonal* listaPersonal, const string& nombreArchivo) {
-    ofstream archivo(nombreArchivo, ios::out | ios::app);
+    ofstream archivo(nombreArchivo, ios::out | ios::trunc);
     try {
         if (!archivo.is_open()) {
             throw Excepcion("No se pudo abrir el archivo para escritura: " + nombreArchivo);
@@ -164,49 +165,57 @@ void GestorArchivos<T>::guardarPersonal(ListaPersonal* listaPersonal, const stri
 }
 
 template<class T>
-void GestorArchivos<T>::guardarTareas(Lista<TareaProduccion*> *ListaTareas, const string &nombreArchivo) {
-    ofstream archivo(nombreArchivo, ios::out | ios::app);
+void GestorArchivos<T>::guardarTareas(ListaTareas* ListaTareas, const string &nombreArchivo) {
+    ofstream archivo(nombreArchivo, ios::out | ios::trunc);
     try {
         if (!archivo.is_open()) {
             throw Excepcion("No se pudo abrir el archivo para escritura: " + nombreArchivo);
         }
 
-        Nodo<TareaProduccion*>* actual = ListaTareas->getPrimero();
+        Nodo<TareaProduccion>* actual = ListaTareas->getPrimeroNodo();
+        int contador = 0;
 
         while (actual != nullptr) {
-            TareaProduccion** tareaPtr = actual->getDato();
-            if (tareaPtr != nullptr && *tareaPtr != nullptr) {
-                TareaProduccion* tarea = *tareaPtr;
-                // Guardar: descripcion,estado,tiempoEstimado,idResponsable
+            TareaProduccion* tarea = actual->getDato();
+            if (tarea != nullptr) {
                 archivo << tarea->getDescripcion() << ","
                         << tarea->getEstado() << ","
                         << tarea->getTiempoEstimado() << ",";
 
-                // Guardar ID del responsable
                 if (tarea->getResponsable() != nullptr) {
                     archivo << tarea->getResponsable()->getId();
                 } else {
                     archivo << "-";
                 }
+
+                EstrategiaTarea* est = tarea->getEstrategia();
                 archivo << "," << tarea->getTipoEstrategia();
+
+                if (auto anim = dynamic_cast<EstrategiaTareaAnimacion*>(est)) {
+                    archivo << "," << anim->getTipo() << "," << anim->getComplejidad();
+                } else if (auto sonido = dynamic_cast<EstrategiaTareaSonido*>(est)) {
+                    archivo << "," << sonido->getTipo() << "," << sonido->getDuracion();
+                } else {
+                    archivo << ",-,-";
+                }
+
                 archivo << "\n";
+            }
+            else {
+                cout << "  - Tarea es nullptr" << endl;
             }
             actual = actual->getSiguiente();
         }
 
         cout << "Tareas guardadas correctamente en " << nombreArchivo << endl;
-
     } catch (const exception& e) {
         cerr << "Error al guardar tareas: " << e.what() << endl;
     }
-
     archivo.close();
 }
 
 template<class T>
 void GestorArchivos<T>::cargarPeliculas(const string& nombreArchivo, ListaPeliculas* listaPeliculas, ListaPersonal* listaPersonal) {
-
-    // Cargar personal desde archivo
 
     ifstream archivo(nombreArchivo);
 
@@ -338,7 +347,7 @@ void GestorArchivos<T>::cargarPersonal(const string& nombreArchivo,ListaPersonal
     archivo.close();
 }
 template<class T>
-void GestorArchivos<T>::cargarTareas(const string &nombreArchivo, Lista<TareaProduccion*>* ListaTareas,ListaPersonal* ListaPersonal) {
+void GestorArchivos<T>::cargarTareas(const string &nombreArchivo, ListaTareas* ListaTareas,ListaPersonal* ListaPersonal) {
  ifstream archivo(nombreArchivo);
 
     try {
@@ -357,10 +366,11 @@ void GestorArchivos<T>::cargarTareas(const string &nombreArchivo, Lista<TareaPro
             getline(ss, estado, ',');
             getline(ss, tiempoEstimadoStr, ',');
             getline(ss, idResponsable, ',');
-            getline(ss, tipoEstrategia);
+            getline(ss, tipoEstrategia, ',');
             getline(ss, param1, ',');
-            getline(ss, param2);
+            getline(ss, param2, ',');
 
+            param2.erase(remove(param2.begin(), param2.end(), '\n'), param2.end());
             // Validar datos básicos
             if (descripcion.empty() || tipoEstrategia.empty()) {
                 cerr << "Línea con datos incompletos, saltando..." << endl;
@@ -408,7 +418,7 @@ void GestorArchivos<T>::cargarTareas(const string &nombreArchivo, Lista<TareaPro
                     tarea->setEstado("completa"); // Asumiendo que tienes este método
                 }
 
-                ListaTareas->agregar(&tarea);
+                ListaTareas->agregarTarea(tarea);
 
             } catch (const exception& e) {
                 cerr << "Error al procesar línea de tarea: " << e.what() << endl;

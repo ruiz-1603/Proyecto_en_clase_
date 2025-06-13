@@ -7,12 +7,13 @@
 GestorRecursos::GestorRecursos() {
     peliculas = new ListaPeliculas();
     personal = new ListaPersonal();
-    tareas = Lista<TareaProduccion*>();
+    tareas = new ListaTareas();
 }
 
 GestorRecursos::~GestorRecursos() {
     delete peliculas;
     delete personal;
+    delete tareas;
 }
 
 // metodos de pelicula
@@ -202,6 +203,3 @@ void GestorRecursos::setPersonal(ListaPersonal *personal) {
     this->personal = personal;
 }
 
-Lista<TareaProduccion*>& GestorRecursos::getTareas() {
-    return tareas;
-}

@@ -3,6 +3,8 @@
 //
 
 #include "TareaProduccion.h"
+#include "EstrategiaTareaAnimacion.h"
+#include "EstrategiaTareaSonido.h"
 
 TareaProduccion::TareaProduccion(string descripcion, Personal* responsable, EstrategiaTarea* estrategia)
     : descripcion(descripcion), estado("incompleta"), responsable(nullptr), estrategia(estrategia) {
@@ -70,5 +72,13 @@ bool TareaProduccion::validarEstado(string& estado) const {
 }
 
 string TareaProduccion::getTipoEstrategia() const {
-    estrategia->getTipo();
+    if (dynamic_cast<EstrategiaTareaAnimacion*>(estrategia)) {
+        return "EstrategiaAnimacion";
+    } else if (dynamic_cast<EstrategiaTareaSonido*>(estrategia)) {
+        return "EstrategiaSonido";
+    }
+    return "Productor (Sin Estrategia)";
+}
+EstrategiaTarea* TareaProduccion::getEstrategia() const {
+    return estrategia;
 }

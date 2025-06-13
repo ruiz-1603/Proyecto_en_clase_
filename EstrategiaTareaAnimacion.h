@@ -46,6 +46,11 @@ public:
     string getTipo() override {
         return "Estrate de Animacion";
     }
+    string getComplejidad() const {
+        return to_string(complejidad);
+    }
+    string getParam1() const override { return tipoAnimacion; }
+    string getParam2() const override { return to_string(complejidad); }
 };
 
 #endif //ESTRATEGIATAREAANIMACION_H

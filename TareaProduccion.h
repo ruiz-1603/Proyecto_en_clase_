@@ -37,6 +37,7 @@ class TareaProduccion {
         bool validarEstado(string& estado) const;
 
         string getTipoEstrategia() const;
+        EstrategiaTarea* getEstrategia() const;
 };
 
 #endif //TAREAPRODUCCION_H

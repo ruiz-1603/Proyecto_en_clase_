@@ -9,11 +9,11 @@
 #include "TareaProduccion.h"
 #include <cmath>
 #include <vector>
-#include "Lista.h"
+#include "ListaTareas.h"
 
 class Cronograma {
     private:
-        Lista<TareaProduccion>* tareas;
+        ListaTareas* tareas;
         bool esFechaValida(string fecha);
 
     public:

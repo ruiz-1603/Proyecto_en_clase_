@@ -552,6 +552,7 @@ void Menu::asignarTareaAPelicula(Pelicula* pelicula) {
 
     TareaProduccion* tarea = new TareaProduccion(descripcion, responsable, estrategia);
     pelicula->getCronograma()->agregarTarea(tarea);
+    interfaz->getTareas()->agregarTarea(tarea);
     cout << endl << "¡Tarea agregada exitosamente!" << endl;
     cout << endl << "Detalles de la tarea:" << endl;
     cout << tarea->mostrarTarea() << endl;
@@ -604,7 +605,7 @@ void Menu::marcarTareaCompleta(Pelicula* pelicula) {
 void Menu::cargar() {
   GestorArchivos<Personal>::cargarPersonal("personal.txt", interfaz->getPersonal());
   GestorArchivos<Pelicula>::cargarPeliculas("peliculas.txt", interfaz->getPeliculas(), interfaz->getPersonal());
-  GestorArchivos<TareaProduccion>::cargarTareas("tareas.txt",&interfaz->getTareas(), interfaz->getPersonal());
+  GestorArchivos<TareaProduccion>::cargarTareas("tareas.txt",interfaz->getTareas(), interfaz->getPersonal());
 
   cout << "----------- PELICULAS CARGADAS --------------" << endl;
   cout << interfaz->getPeliculas()->mostrarPeliculas();
@@ -614,12 +615,12 @@ void Menu::cargar() {
   cout << interfaz->getPersonal()->mostrarPersonal();
   cout << endl;
   cout << "----------- TAREAS CARGADAS --------------" << endl;
-  cout << interfaz->getTareas().mostrar2();
+  cout << interfaz->getTareas()->mostrarTareas();
   cout << "Datos cargados correctamente." << endl;
 }
 void Menu::guardar() {
   GestorArchivos<Pelicula>::guardarPeliculas(interfaz->getPeliculas(), interfaz->getPersonal(), "peliculas.txt");
   GestorArchivos<Personal>::guardarPersonal(interfaz->getPersonal(), "personal.txt");
-  GestorArchivos<TareaProduccion>::guardarTareas(&interfaz->getTareas(), "tareas.txt");
+  GestorArchivos<TareaProduccion>::guardarTareas(interfaz->getTareas(), "tareas.txt");
   cout << "Datos guardados correctamente." << endl;
 }

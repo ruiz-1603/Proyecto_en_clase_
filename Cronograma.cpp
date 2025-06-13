@@ -6,7 +6,7 @@
 #include <regex>
 
 Cronograma::Cronograma() {
-    tareas = new Lista<TareaProduccion>();
+    tareas = new ListaTareas();
 }
 
 Cronograma::~Cronograma() {
@@ -14,11 +14,11 @@ Cronograma::~Cronograma() {
 }
 
 void Cronograma::agregarTarea(TareaProduccion* tarea) {
-    tareas->agregar(tarea);
+    tareas->agregarTarea(tarea);
 }
 
 void Cronograma::marcarTareaCompleta(int indice) {
-    Nodo<TareaProduccion>* actual = tareas->getPrimero();
+    Nodo<TareaProduccion>* actual = tareas->getPrimeroNodo();
     int i = 0;
     
     while (actual != nullptr && i < indice) {
@@ -27,7 +27,7 @@ void Cronograma::marcarTareaCompleta(int indice) {
     }
     
     if (actual == nullptr) {
-        throw "Índice de tarea inválido";
+        throw "Indice de tarea invalido";
     }
     
     actual->getDato()->setEstado("completa");
@@ -35,7 +35,7 @@ void Cronograma::marcarTareaCompleta(int indice) {
 
 string Cronograma::mostrarCronograma() const {
     stringstream ss;
-    Nodo<TareaProduccion>* actual = tareas->getPrimero();
+    Nodo<TareaProduccion>* actual = tareas->getPrimeroNodo();
     int i = 0;
 
     if (actual == nullptr) {
@@ -56,7 +56,7 @@ double Cronograma::getProgreso() const {
     if (tareas->estaVacia()) return 0.0;
     
     int completadas = 0;
-    Nodo<TareaProduccion>* actual = tareas->getPrimero();
+    Nodo<TareaProduccion>* actual = tareas->getPrimeroNodo();
     while (actual != nullptr) {
         if (actual->getDato()->getEstado() == "completa") {
             completadas++;
@@ -83,7 +83,7 @@ void Cronograma::setProgreso(double progreso) {
     }
 
     int contador = 0;
-    Nodo<TareaProduccion>* actual = tareas->getPrimero();
+    Nodo<TareaProduccion>* actual = tareas->getPrimeroNodo();
 
     // Marcar las primeras 'tareasACompletar' tareas como completas
     while (actual != nullptr && contador < tareasACompletar) {
@@ -100,7 +100,7 @@ void Cronograma::setProgreso(double progreso) {
 }
 
 TareaProduccion* Cronograma::getTarea(int indice) const {
-    Nodo<TareaProduccion>* actual = tareas->getPrimero();
+    Nodo<TareaProduccion>* actual = tareas->getPrimeroNodo();
     int i = 0;
     
     while (actual != nullptr && i < indice) {

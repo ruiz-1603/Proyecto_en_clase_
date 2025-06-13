@@ -18,6 +18,9 @@ public:
     virtual string obtenerRequisitos() = 0;
     //Virtual para ToString de Personal
     virtual string getTipo() = 0;
+    //----------------------------------
+    virtual string getParam1() const = 0;
+    virtual string getParam2() const = 0;
 };
 
 #endif //ESTRATEGIATAREA_H 

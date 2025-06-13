@@ -50,6 +50,12 @@ public:
     string getTipo() override {
         return "Estrategia de Sonido";
     }
+    string getDuracion() const {
+        return to_string(duracionMinutos);
+    }
+    //--------------------------------
+    string getParam1() const override { return tipoSonido; }
+    string getParam2() const override { return to_string(duracionMinutos); }
 };
 
 #endif //ESTRATEGIATAREASONIDO_H 
