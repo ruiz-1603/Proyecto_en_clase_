@@ -12,7 +12,7 @@ TareaProduccion::TareaProduccion(string descripcion, Personal* responsable, Estr
         this->responsable = responsable;
         this->tiempoEstimado = estrategia->calcularTiempoEstimado();
     } else {
-        throw "El responsable no es válido para esta tarea";
+        throw "El responsable no es valido para esta tarea";
     }
 }
 
@@ -34,7 +34,7 @@ void TareaProduccion::setEstado(string estado) {
     if (validarEstado(estado)) {
         this->estado = estado;
     } else {
-        throw "Estado inválido";
+        throw "Estado invalido";
     }
 }
 
@@ -52,15 +52,15 @@ void TareaProduccion::setEstrategia(EstrategiaTarea* nuevaEstrategia) {
         this->estrategia = nuevaEstrategia;
         this->tiempoEstimado = estrategia->calcularTiempoEstimado();
     } else {
-        throw "El responsable actual no es válido para la nueva estrategia";
+        throw "El responsable actual no es valido para la nueva estrategia";
     }
 }
 
 string TareaProduccion::mostrarTarea() const {
     stringstream ss;
-    ss << "Descripción: " << descripcion << endl;
+    ss << "Descripcion: " << descripcion << endl;
     ss << "Estado: " << estado << endl;
-    ss << "Tiempo Estimado: " << tiempoEstimado << " días" << endl;
+    ss << "Tiempo Estimado: " << tiempoEstimado << " dias" << endl;
     ss << "Responsable: " << responsable->toString() << endl;
     ss << "Requisitos:" << endl;
     ss << estrategia->obtenerRequisitos();

@@ -312,7 +312,7 @@ void GestorArchivos<T>::cargarPersonal(const string& nombreArchivo,ListaPersonal
 
             // Validar datos básicos
             if (tipo.empty() || id.empty() || nombre.empty() || email.empty()) {
-                cerr << "Línea con datos incompletos, saltando..." << endl;
+                cerr << "Linea con datos incompletos, saltando..." << endl;
                 continue;
             }
 
@@ -402,7 +402,7 @@ void GestorArchivos<T>::cargarTareas(const string &nombreArchivo, ListaTareas* L
                     estrategia = new EstrategiaTareaAnimacion(param1.empty() ? "2D" : param1, complejidad);
                 } else if (tipoEstrategia == "EstrategiaSonido") {
                     int duracion = param2.empty() ? 60 : stoi(param2);
-                    estrategia = new EstrategiaTareaSonido(param1.empty() ? "Música" : param1, duracion);
+                    estrategia = new EstrategiaTareaSonido(param1.empty() ? "Musica" : param1, duracion);
                 }
 
                 if (estrategia == nullptr) {

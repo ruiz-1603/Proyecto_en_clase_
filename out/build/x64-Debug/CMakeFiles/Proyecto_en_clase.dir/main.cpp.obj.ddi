@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "CMakeFiles\\Proyecto_en_clase.dir\\main.cpp.obj",
+            "outputs": [
+                "C:\\Users\\castr\\Desktop\\Proyecto_en_clase_\\out\\build\\x64-Debug\\vc140.pdb",
+                "CMakeFiles\\Proyecto_en_clase.dir\\main.cpp.obj.ddi"
+            ],
+            "requires": []
+        }
+    ]
+}

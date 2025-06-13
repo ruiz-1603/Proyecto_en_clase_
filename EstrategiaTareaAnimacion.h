@@ -33,11 +33,11 @@ public:
 
     string obtenerRequisitos() override {
         stringstream ss;
-        ss << "Tipo de Animación: " << tipoAnimacion << endl;
-        ss << "Nivel de Complejidad: " << complejidad << "/5" << endl;
+        ss << "Tipo de Animacion: " << tipoAnimacion << endl;
+        ss << "Complejidad: " << complejidad << endl;
         ss << "Requisitos:" << endl;
-        ss << "- Software de animación " << tipoAnimacion << endl;
-        ss << "- Experiencia en animación " << tipoAnimacion << endl;
+        ss << "- Software de animacion " << tipoAnimacion << endl;
+        ss << "- Experiencia en animacion " << tipoAnimacion << endl;
         if (tipoAnimacion == "3D") {
             ss << "- Conocimientos de modelado 3D" << endl;
         }

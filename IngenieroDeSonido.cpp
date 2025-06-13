@@ -12,6 +12,6 @@ string IngenieroDeSonido::toString() const {
     ss << "ID: " << id << endl;
     ss << "Nombre: " << nombre << endl;
     ss << "Email: " << email << endl;
-    ss << "Años de experiencia: " << aniosExperiencia << endl;
+    ss << "Anios de experiencia: " << aniosExperiencia << endl;
     return ss.str();
 }

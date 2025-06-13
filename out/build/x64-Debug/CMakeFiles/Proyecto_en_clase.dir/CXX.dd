@@ -1,0 +1,27 @@
+ninja_dyndep_version = 1.0
+build CMakeFiles\Proyecto_en_clase.dir\main.cpp.obj: dyndep
+
+build CMakeFiles\Proyecto_en_clase.dir\Artista.cpp.obj: dyndep
+
+build CMakeFiles\Proyecto_en_clase.dir\Cronograma.cpp.obj: dyndep
+
+build CMakeFiles\Proyecto_en_clase.dir\GestorArchivos.cpp.obj: dyndep
+
+build CMakeFiles\Proyecto_en_clase.dir\GestorRecursos.cpp.obj: dyndep
+
+build CMakeFiles\Proyecto_en_clase.dir\IngenieroDeSonido.cpp.obj: dyndep
+
+build CMakeFiles\Proyecto_en_clase.dir\ListaPeliculas.cpp.obj: dyndep
+
+build CMakeFiles\Proyecto_en_clase.dir\ListaPersonal.cpp.obj: dyndep
+
+build CMakeFiles\Proyecto_en_clase.dir\Menu.cpp.obj: dyndep
+
+build CMakeFiles\Proyecto_en_clase.dir\Pelicula.cpp.obj: dyndep
+
+build CMakeFiles\Proyecto_en_clase.dir\Personal.cpp.obj: dyndep
+
+build CMakeFiles\Proyecto_en_clase.dir\Productor.cpp.obj: dyndep
+
+build CMakeFiles\Proyecto_en_clase.dir\TareaProduccion.cpp.obj: dyndep
+
