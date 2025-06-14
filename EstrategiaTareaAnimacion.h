@@ -44,7 +44,7 @@ public:
         return ss.str();
     }
     string getTipo() override {
-        return "Estrate de Animacion";
+        return "EstrategiaAnimacion";
     }
     string getComplejidad() const {
         return to_string(complejidad);

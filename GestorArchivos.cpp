@@ -51,6 +51,36 @@ void GestorArchivos<T>::guardarPeliculas(ListaPeliculas* listaPeliculas, ListaPe
                 } else {
                     archivo << "," << idsEquipo << "\n";
                 }
+                if (peli->getCronograma() != nullptr) {
+                    ListaTareas *tareas = peli->getCronograma()->getTareas();
+                    if (tareas != nullptr) {
+                        Nodo<TareaProduccion>* nodoTarea = tareas->getPrimeroNodo();
+
+                        while (nodoTarea != nullptr) {
+                            TareaProduccion* tarea = nodoTarea->getDato();
+                            if (tarea != nullptr) {
+                                string tipoEstrategia = "Desconocido";
+                                string param1 = "-", param2 = "-";
+
+                                if (tarea->getEstrategia() != nullptr) {
+                                    tipoEstrategia = tarea->getEstrategia()->getTipo();
+                                    param1 = tarea->getEstrategia()->getParam1();
+                                    param2 = tarea->getEstrategia()->getParam2();
+                                }
+
+                                archivo << tarea->getDescripcion() << ","
+                                        << tarea->getEstado() << ","
+                                        << tarea->getTiempoEstimado() << ","
+                                        << (tarea->getResponsable() ? tarea->getResponsable()->getId() : "-") << ","
+                                        << tipoEstrategia << ","
+                                        << param1 << ","
+                                        << param2 << "\n";
+                            }
+
+                            nodoTarea = nodoTarea->getSiguiente();
+                        }
+                    }
+                }
 
                 // Agregar personal a la lista global
                 if (equipoPelicula != nullptr) {
@@ -192,9 +222,9 @@ void GestorArchivos<T>::guardarTareas(ListaTareas* ListaTareas, const string &no
                 archivo << "," << tarea->getTipoEstrategia();
 
                 if (auto anim = dynamic_cast<EstrategiaTareaAnimacion*>(est)) {
-                    archivo << "," << anim->getTipo() << "," << anim->getComplejidad();
+                    archivo << "," << anim->getParam1() << "," << anim->getParam2();
                 } else if (auto sonido = dynamic_cast<EstrategiaTareaSonido*>(est)) {
-                    archivo << "," << sonido->getTipo() << "," << sonido->getDuracion();
+                    archivo << "," << sonido->getParam1() << "," << sonido->getParam2();
                 } else {
                     archivo << ",-,-";
                 }
@@ -216,7 +246,6 @@ void GestorArchivos<T>::guardarTareas(ListaTareas* ListaTareas, const string &no
 
 template<class T>
 void GestorArchivos<T>::cargarPeliculas(const string& nombreArchivo, ListaPeliculas* listaPeliculas, ListaPersonal* listaPersonal) {
-
     ifstream archivo(nombreArchivo);
 
     try {
@@ -228,6 +257,7 @@ void GestorArchivos<T>::cargarPeliculas(const string& nombreArchivo, ListaPelicu
         while (getline(archivo, linea)) {
             if (linea.empty()) continue;
 
+            // --- Parsear datos básicos de la película ---
             stringstream ss(linea);
             string titulo, estado, progresoStr, equipoStr;
 
@@ -240,6 +270,7 @@ void GestorArchivos<T>::cargarPeliculas(const string& nombreArchivo, ListaPelicu
 
             Pelicula* pelicula = new Pelicula(titulo);
 
+            // Set progreso si es válido
             if (!progresoStr.empty() && progresoStr != "0.00") {
                 float progreso = stof(progresoStr);
                 if (pelicula->getCronograma() != nullptr) {
@@ -247,10 +278,10 @@ void GestorArchivos<T>::cargarPeliculas(const string& nombreArchivo, ListaPelicu
                 }
             }
 
+            // --- Cargar equipo de personal manualmente ---
             if (!equipoStr.empty() && equipoStr != "-") {
                 stringstream ssEquipo(equipoStr);
                 string idPersonal;
-
                 while (getline(ssEquipo, idPersonal, ';')) {
                     if (idPersonal.empty()) continue;
 
@@ -273,13 +304,100 @@ void GestorArchivos<T>::cargarPeliculas(const string& nombreArchivo, ListaPelicu
                 }
             }
 
+            // --- Ahora leer las tareas asociadas a esta película ---
+            while (true) {
+                // Guardar posición para posible retroceso
+                std::streampos posAnterior = archivo.tellg();
+
+                string lineaTarea;
+                if (!getline(archivo, lineaTarea)) {
+                    // No hay más líneas
+                    break;
+                }
+
+                // Contar comas para validar formato de tarea (6 o más campos)
+                int numComas = std::count(lineaTarea.begin(), lineaTarea.end(), ',');
+                if (numComas < 6) {
+                    // No es línea de tarea -> retrocedemos y salimos del loop
+                    archivo.seekg(posAnterior);
+                    break;
+                }
+
+
+                stringstream ssT(lineaTarea);
+                string descripcion, estadoTarea, tiempoEstimadoStr, idResponsable, tipoEstrategia, param1, param2;
+
+                getline(ssT, descripcion, ',');
+                getline(ssT, estadoTarea, ',');
+                getline(ssT, tiempoEstimadoStr, ',');
+                getline(ssT, idResponsable, ',');
+                getline(ssT, tipoEstrategia, ',');
+                getline(ssT, param1, ',');
+                getline(ssT, param2);
+
+                // Buscar responsable manualmente
+                Personal* responsable = nullptr;
+                if (!idResponsable.empty() && idResponsable != "-") {
+                    Nodo<Personal>* actualPersonal = listaPersonal->getPersonal()->getPrimero();
+                    while (actualPersonal != nullptr) {
+                        if (actualPersonal->getDato()->getId() == idResponsable) {
+                            responsable = actualPersonal->getDato();
+                            break;
+                        }
+                        actualPersonal = actualPersonal->getSiguiente();
+                    }
+                }
+
+                if (responsable == nullptr && idResponsable != "-") {
+                    cerr << "No se encontro personal con ID: " << idResponsable << endl;
+                    continue;  // No se puede crear tarea sin responsable válido
+                }
+
+                // Crear la estrategia según tipo
+                EstrategiaTarea* estrategia = nullptr;
+                try {
+                    if (tipoEstrategia == "EstrategiaAnimacion") {
+                        int complejidad = param2.empty() ? 1 : stoi(param2);
+                        estrategia = new EstrategiaTareaAnimacion(param1.empty() ? "2D" : param1, complejidad);
+                    } else if (tipoEstrategia == "EstrategiaSonido") {
+                        int duracion = param2.empty() ? 60 : stoi(param2);
+                        estrategia = new EstrategiaTareaSonido(param1.empty() ? "Musica" : param1, duracion);
+                    } else {
+                        cerr << "Tipo de estrategia desconocido: " << tipoEstrategia << endl;
+                        continue;
+                    }
+                } catch (const exception& e) {
+                    cerr << "Error creando estrategia: " << e.what() << endl;
+                    continue;
+                }
+
+                if (!estrategia->validarResponsable(responsable)) {
+                    cerr << "Responsable invalido para estrategia " << tipoEstrategia << ": " << idResponsable << endl;
+                    delete estrategia;
+                    continue;
+                }
+
+                // Crear tarea y asignar estado
+                TareaProduccion* tarea = new TareaProduccion(descripcion, responsable, estrategia);
+                tarea->setEstado(estadoTarea);
+
+                // Agregar tarea al cronograma
+                if (pelicula->getCronograma() != nullptr) {
+                    pelicula->getCronograma()->agregarTarea(tarea);
+                } else {
+                    cerr << "La película no tiene cronograma para agregar tarea." << endl;
+                    delete tarea; // evitar fuga
+                }
+            }
+
+            // Agregar película a la lista
             listaPeliculas->agregarPelicula(pelicula);
         }
 
-        cout << "Peliculas cargadas correctamente desde " << nombreArchivo << endl;
+        cout << "Peliculas con tareas cargadas correctamente desde " << nombreArchivo << endl;
 
     } catch (const exception& e) {
-        cerr << "Error al cargar peliculas: " << e.what() << endl;
+        cerr << "Error al cargar peliculas con tareas: " << e.what() << endl;
     }
 
     archivo.close();

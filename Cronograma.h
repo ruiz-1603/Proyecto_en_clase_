@@ -28,6 +28,7 @@ class Cronograma {
         // Getters
         int getCantidadTareas() const { return tareas->obtenerTamaño(); }
         TareaProduccion* getTarea(int indice) const;
+        ListaTareas* getTareas() const;
 };
 
 #endif //CRONOGRAMA_H

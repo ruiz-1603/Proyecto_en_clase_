@@ -48,7 +48,7 @@ public:
         return ss.str();
     }
     string getTipo() override {
-        return "Estrategia de Sonido";
+        return "EstrategiaSonido";
     }
     string getDuracion() const {
         return to_string(duracionMinutos);

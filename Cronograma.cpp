@@ -114,6 +114,10 @@ TareaProduccion* Cronograma::getTarea(int indice) const {
     return actual->getDato();
 }
 
+ListaTareas* Cronograma::getTareas() const {
+    return tareas;
+}
+
 bool Cronograma::esFechaValida(string fecha) {
     regex fechaValida("\\d{4}/\\d{2}/\\d{2}$");
     if (!regex_match(fecha, fechaValida)) return false;
